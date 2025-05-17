@@ -14,7 +14,7 @@ import RegisterPage from './pages/auth/RegisterPage';
 import ProtectedRoute from './auth/ProtectedRoute';
 
 // Public Pages
-import HomePage from './components/HomePage';
+import HomePage from './components/HomePage.jsx';
 
 // Student Pages
 import StudentDashboard from './pages/student/dashboard';
