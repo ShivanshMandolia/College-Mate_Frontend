@@ -29,11 +29,8 @@
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.56.3",
-<<<<<<< HEAD
-    "react-hot-toast": "^2.5.2",
-=======
+
     "react-hot-toast": "^2.4.1",
->>>>>>> d0a27d41905140cbe6fbd9e9ccda112d3e824dc0
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.0"
   },

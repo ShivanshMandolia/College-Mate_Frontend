@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated, selectUserRole, selectIsSuperAdmin } from '../features/auth/authSlice';
+import { selectIsAuthenticated, selectUserRole, selectIsSuperAdmin } from '../../features/auth/authSlice';
 
 /**
  * ProtectedRoute component that restricts access based on user authentication and role.

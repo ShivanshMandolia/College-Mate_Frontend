@@ -11,22 +11,22 @@ import Layout from './Layout';
 // Auth Components
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import ProtectedRoute from './auth/ProtectedRoute';
+import ProtectedRoute from './pages/auth/ProtectedRoute.jsx';
 
 // Public Pages
 import HomePage from './components/HomePage.jsx';
 
 // Student Pages
-import StudentDashboard from './pages/student/dashboard';
-import ComplainentPage from './pages/student/complainentpage';
-import CreateComplainent from './pages/student/createcomplainent';
-import EventPage from './pages/student/eventpage';
+//import StudentDashboard from './pages/student/dashboard';
+//import ComplainentPage from './pages/student/complainentpage';
+//import CreateComplainent from './pages/student/createcomplainent';
+//import EventPage from './pages/student/eventpage';
 import LostAndFoundPage from './pages/student/lostandfoundpage';
-import PlacementPage from './pages/student/placementpage';
-import PlacementDetailPage from './pages/student/placementdetailpage';
-import PostFoundItem from './pages/student/postfounditem';
-import PostLostItemPage from './pages/student/postlostitempage';
-import ResumeAnalyzer from './pages/student/resumeanalyzer';
+//import PlacementPage from './pages/student/placementpage';
+//import PlacementDetailPage from './pages/student/placementdetailpage';
+//import PostFoundItem from './pages/student/postfounditem';
+//import PostLostItemPage from './pages/student/postlostitempage';
+//import ResumeAnalyzer from './pages/student/resumeanalyzer';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/dashboard';
@@ -35,10 +35,10 @@ import CreateEventPage from './pages/admin/createeventpage';
 import GetAllEventsPage from './pages/admin/getalleventspage';
 
 // Super Admin Pages
-import SuperAdminDashboard from './pages/superadmin/dashboard';
-import AddPlacement from './pages/superadmin/addplacement';
-import ComplaintDetail from './pages/superadmin/complainentdetail';
-import ComplaintPage from './pages/superadmin/complanetpage';
+//import SuperAdminDashboard from './pages/superadmin/dashboard';
+//import AddPlacement from './pages/superadmin/addplacement';
+//import ComplaintDetail from './pages/superadmin/complainentdetail';
+//import ComplaintPage from './pages/superadmin/complanetpage';
 
 // ScrollToTop component to scroll to top on route change
 const ScrollToTop = () => {
