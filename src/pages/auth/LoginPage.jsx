@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    rememberMe: false
   });
   const [errors, setErrors] = useState({});
 

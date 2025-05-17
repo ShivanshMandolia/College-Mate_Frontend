@@ -321,10 +321,7 @@ const LostAndFoundPage = () => {
             )}
             
             <p className="text-sm text-gray-600 mb-2">
-              <span className="font-medium">Item Name:</span> {claim.itemId?.name || 'N/A'}
-            </p>
-            <p className="text-sm text-gray-600 mb-2">
-              <span className="font-medium">Your Claim Description:</span> {claim.description}
+              <span className="font-medium">Claim Description:</span> {claim.description}
             </p>
             <p className="text-sm text-gray-600 mb-1">
               <span className="font-medium">Date Claimed:</span> {formatDate(claim.createdAt)}
