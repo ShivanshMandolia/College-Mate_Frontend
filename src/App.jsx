@@ -91,16 +91,16 @@ function App() {
             <Route path="student/*" element={
               <ProtectedRoute allowedRoles={['student']}>
                 <Routes>
-                  <Route path="dashboard" element={<StudentDashboard />} />
-                  <Route path="complaints" element={<ComplainentPage />} />
-                  <Route path="create-complaint" element={<CreateComplainent />} />
-                  <Route path="events" element={<EventPage />} />
+                    {/* <Route path="dashboard" element={<StudentDashboard />} />
+                    <Route path="complaints" element={<ComplainentPage />} />
+                    <Route path="create-complaint" element={<CreateComplainent />} />
+                    <Route path="events" element={<EventPage />} /> */}
                   <Route path="lost-found" element={<LostAndFoundPage />} />
-                  <Route path="placements" element={<PlacementPage />} />
+                  {/* <Route path="placements" element={<PlacementPage />} />
                   <Route path="placements/:id" element={<PlacementDetailPage />} />
                   <Route path="post-found-item" element={<PostFoundItem />} />
                   <Route path="post-lost-item" element={<PostLostItemPage />} />
-                  <Route path="resume-analyzer" element={<ResumeAnalyzer />} />
+                  <Route path="resume-analyzer" element={<ResumeAnalyzer />} /> */}
                 </Routes>
               </ProtectedRoute>
             } />
@@ -108,24 +108,24 @@ function App() {
             {/* Admin Routes */}
             <Route path="admin/*" element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <Routes>
+                {/* <Routes>
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="create-event" element={<CreateEventPage />} />
                   <Route path="events" element={<GetAllEventsPage />} />
-                </Routes>
+                </Routes> */}
               </ProtectedRoute>
             } />
 
             {/* Super Admin Routes */}
             <Route path="superadmin/*" element={
               <ProtectedRoute allowedRoles={['superadmin']} requireSuperAdmin={true}>
-                <Routes>
+                {/* <Routes>
                   <Route path="dashboard" element={<SuperAdminDashboard />} />
                   <Route path="add-placement" element={<AddPlacement />} />
                   <Route path="complaint-detail/:id" element={<ComplaintDetail />} />
                   <Route path="complaints" element={<ComplaintPage />} />
-                </Routes>
+                </Routes> */}
               </ProtectedRoute>
             } />
 
