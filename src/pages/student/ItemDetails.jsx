@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useGetItemDetailsQuery } from '../../../features/lostFound/lostFoundApiSlice';
+import { useGetItemDetailsQuery } from '../../features/lostFound/lostFoundApiSlice';
 import { Calendar, MapPin, Tag, AlertCircle, ArrowLeft, Eye } from 'lucide-react';
 
 const ItemDetails = () => {
