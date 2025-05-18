@@ -18,15 +18,12 @@ import HomePage from './components/HomePage.jsx';
 
 // Student Pages
 import StudentDashboard from './pages/student/dashboard';
-//import ComplainentPage from './pages/student/complainentpage';
-//import CreateComplainent from './pages/student/createcomplainent';
-//import EventPage from './pages/student/eventpage';
 import LostAndFoundPage from './pages/student/lostandfoundpage';
-//import PlacementPage from './pages/student/placementpage';
-//import PlacementDetailPage from './pages/student/placementdetailpage';
-//import PostFoundItem from './pages/student/postfounditem';
-//import PostLostItemPage from './pages/student/postlostitempage';
-//import ResumeAnalyzer from './pages/student/resumeanalyzer';
+import ItemDetails from './pages/student/ItemDetails';
+import ClaimPage from './pages/student/ClaimePage';
+import MyRequests from './pages/student/MyRequests';
+import PostFoundItem from './pages/student/postfounditem';
+import PostLostItemPage from './pages/student/postlostitempage';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/dashboard';
@@ -36,9 +33,6 @@ import GetAllEventsPage from './pages/admin/getalleventspage';
 
 // Super Admin Pages
 import SuperAdminDashboard from './pages/superadmin/dashboard';
-//import AddPlacement from './pages/superadmin/addplacement';
-//import ComplaintDetail from './pages/superadmin/complainentdetail';
-//import ComplaintPage from './pages/superadmin/complanetpage';
 
 // ScrollToTop component to scroll to top on route change
 const ScrollToTop = () => {
@@ -91,16 +85,13 @@ function App() {
             <Route path="student/*" element={
               <ProtectedRoute allowedRoles={['student']}>
                 <Routes>
-                     <Route path="dashboard" element={<StudentDashboard />} />
-                    {/* <Route path="complaints" element={<ComplainentPage />} />
-                    <Route path="create-complaint" element={<CreateComplainent />} />
-                    <Route path="events" element={<EventPage />} />  */}
+                  <Route path="dashboard" element={<StudentDashboard />} />
                   <Route path="lost-found" element={<LostAndFoundPage />} />
-                  {/* <Route path="placements" element={<PlacementPage />} />
-                  <Route path="placements/:id" element={<PlacementDetailPage />} />
+                  <Route path="item/:id" element={<ItemDetails />} />
+                  <Route path="claim-item/:id" element={<ClaimPage />} />
+                  <Route path="my-requests" element={<MyRequests />} />
                   <Route path="post-found-item" element={<PostFoundItem />} />
                   <Route path="post-lost-item" element={<PostLostItemPage />} />
-                  <Route path="resume-analyzer" element={<ResumeAnalyzer />} /> */}
                 </Routes>
               </ProtectedRoute>
             } />
@@ -108,24 +99,21 @@ function App() {
             {/* Admin Routes */}
             <Route path="admin/*" element={
               <ProtectedRoute allowedRoles={['admin']}>
-                 <Routes>
+                <Routes>
                   <Route path="dashboard" element={<AdminDashboard />} />
-                  {/* <Route path="complaints" element={<AdminComplaints />} />
+                  <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="create-event" element={<CreateEventPage />} />
-                  <Route path="events" element={<GetAllEventsPage />} /> */}
-                </Routes> 
+                  <Route path="events" element={<GetAllEventsPage />} />
+                </Routes>
               </ProtectedRoute>
             } />
 
             {/* Super Admin Routes */}
             <Route path="superadmin/*" element={
               <ProtectedRoute allowedRoles={['superadmin']} requireSuperAdmin={true}>
-                 <Routes>
+                <Routes>
                   <Route path="dashboard" element={<SuperAdminDashboard />} />
-                  {/* <Route path="add-placement" element={<AddPlacement />} />
-                  <Route path="complaint-detail/:id" element={<ComplaintDetail />} />
-                  <Route path="complaints" element={<ComplaintPage />} /> */}
-                </Routes> 
+                </Routes>
               </ProtectedRoute>
             } />
 
