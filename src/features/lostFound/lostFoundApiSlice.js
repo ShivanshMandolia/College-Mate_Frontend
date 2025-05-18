@@ -60,6 +60,13 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
       providesTags: ['LostFound'],
     }),
     
+    getFoundItemById: builder.query({
+      query: (itemId) => `/items/found-item/${itemId}`,
+      providesTags: (result, error, itemId) => [
+        { type: 'LostFound', id: itemId }
+      ],
+    }),
+    
     getMyListings: builder.query({
       query: () => '/items/my-listings',
       providesTags: ['LostFound'],
@@ -85,6 +92,13 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: { itemId },
       }),
+    }),
+    
+    getClaimRequestById: builder.query({
+      query: (claimId) => `/items/claim/${claimId}`,
+      providesTags: (result, error, claimId) => [
+        { type: 'LostFound', id: claimId }
+      ],
     }),
     
     createLostItemRequest: builder.mutation({
@@ -119,8 +133,15 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
     }),
     
     getMyLostRequests: builder.query({
-      query: () => '/items/my-requests',
+      query: () => '/items/my-lost-requests',
       providesTags: ['LostFound'],
+    }),
+    
+    getLostItemRequestById: builder.query({
+      query: (requestId) => `/items/lost-request/${requestId}`,
+      providesTags: (result, error, requestId) => [
+        { type: 'LostFound', id: requestId }
+      ],
     }),
   }),
 });
@@ -129,11 +150,14 @@ export const {
   useCreateFoundItemMutation,
   useCreateClaimedRequestMutation,
   useGetAllFoundItemsQuery,
+  useGetFoundItemByIdQuery,
   useGetMyListingsQuery,
   useGetMyRequestsQuery,
   useUpdateClaimStatusMutation,
   useGetClaimsForMyItemMutation,
+  useGetClaimRequestByIdQuery,
   useCreateLostItemRequestMutation,
   useGetAllLostRequestsQuery,
   useGetMyLostRequestsQuery,
+  useGetLostItemRequestByIdQuery,
 } = lostFoundApiSlice;
