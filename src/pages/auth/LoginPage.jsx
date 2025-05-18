@@ -21,14 +21,14 @@ const LoginPage = () => {
   const isSuperAdmin = useSelector(selectIsSuperAdmin);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (isSuperAdmin) {
-        navigate('/superadmin/dashboard');
-      } else if (userRole === 'admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/student/dashboard');
-      }
+    if (!isAuthenticated || !userRole) return;
+
+    if (isSuperAdmin) {
+      navigate('/superadmin/dashboard');
+    } else if (userRole === 'admin') {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/student/dashboard');
     }
   }, [isAuthenticated, userRole, isSuperAdmin, navigate]);
 
