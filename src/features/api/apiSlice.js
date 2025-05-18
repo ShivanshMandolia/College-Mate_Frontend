@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { setCredentials, logOut } from '../auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://college-mate-backend-1.onrender.com',
+  baseUrl: 'https://college-mate-backend-1.onrender.com/api/v1',
   prepareHeaders: (headers, { getState }) => {
     const token = getState()?.auth?.accessToken;
     if (token) {

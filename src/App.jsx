@@ -17,7 +17,7 @@ import ProtectedRoute from './pages/auth/ProtectedRoute.jsx';
 import HomePage from './components/HomePage.jsx';
 
 // Student Pages
-//import StudentDashboard from './pages/student/dashboard';
+import StudentDashboard from './pages/student/dashboard';
 //import ComplainentPage from './pages/student/complainentpage';
 //import CreateComplainent from './pages/student/createcomplainent';
 //import EventPage from './pages/student/eventpage';
@@ -35,7 +35,7 @@ import CreateEventPage from './pages/admin/createeventpage';
 import GetAllEventsPage from './pages/admin/getalleventspage';
 
 // Super Admin Pages
-//import SuperAdminDashboard from './pages/superadmin/dashboard';
+import SuperAdminDashboard from './pages/superadmin/dashboard';
 //import AddPlacement from './pages/superadmin/addplacement';
 //import ComplaintDetail from './pages/superadmin/complainentdetail';
 //import ComplaintPage from './pages/superadmin/complanetpage';
@@ -91,10 +91,10 @@ function App() {
             <Route path="student/*" element={
               <ProtectedRoute allowedRoles={['student']}>
                 <Routes>
-                    {/* <Route path="dashboard" element={<StudentDashboard />} />
-                    <Route path="complaints" element={<ComplainentPage />} />
+                     <Route path="dashboard" element={<StudentDashboard />} />
+                    {/* <Route path="complaints" element={<ComplainentPage />} />
                     <Route path="create-complaint" element={<CreateComplainent />} />
-                    <Route path="events" element={<EventPage />} /> */}
+                    <Route path="events" element={<EventPage />} />  */}
                   <Route path="lost-found" element={<LostAndFoundPage />} />
                   {/* <Route path="placements" element={<PlacementPage />} />
                   <Route path="placements/:id" element={<PlacementDetailPage />} />
@@ -108,24 +108,24 @@ function App() {
             {/* Admin Routes */}
             <Route path="admin/*" element={
               <ProtectedRoute allowedRoles={['admin']}>
-                {/* <Routes>
+                 <Routes>
                   <Route path="dashboard" element={<AdminDashboard />} />
-                  <Route path="complaints" element={<AdminComplaints />} />
+                  {/* <Route path="complaints" element={<AdminComplaints />} />
                   <Route path="create-event" element={<CreateEventPage />} />
-                  <Route path="events" element={<GetAllEventsPage />} />
-                </Routes> */}
+                  <Route path="events" element={<GetAllEventsPage />} /> */}
+                </Routes> 
               </ProtectedRoute>
             } />
 
             {/* Super Admin Routes */}
             <Route path="superadmin/*" element={
               <ProtectedRoute allowedRoles={['superadmin']} requireSuperAdmin={true}>
-                {/* <Routes>
+                 <Routes>
                   <Route path="dashboard" element={<SuperAdminDashboard />} />
-                  <Route path="add-placement" element={<AddPlacement />} />
+                  {/* <Route path="add-placement" element={<AddPlacement />} />
                   <Route path="complaint-detail/:id" element={<ComplaintDetail />} />
-                  <Route path="complaints" element={<ComplaintPage />} />
-                </Routes> */}
+                  <Route path="complaints" element={<ComplaintPage />} /> */}
+                </Routes> 
               </ProtectedRoute>
             } />
 

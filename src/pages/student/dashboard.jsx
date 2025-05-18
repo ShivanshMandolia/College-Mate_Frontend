@@ -1,9 +1,9 @@
 import React from 'react'
 
-function dashboard() {
+function Studentdashboard() {
   return (
     <div>dashboard</div>
   )
 }
 
-export default dashboard
+export default Studentdashboard;

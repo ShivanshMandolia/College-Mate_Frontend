@@ -15,12 +15,11 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
-  
+
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const userRole = useSelector(selectUserRole);
   const isSuperAdmin = useSelector(selectIsSuperAdmin);
 
-  // If user is already authenticated, redirect to appropriate dashboard
   useEffect(() => {
     if (isAuthenticated) {
       if (isSuperAdmin) {
@@ -34,13 +33,12 @@ const LoginPage = () => {
   }, [isAuthenticated, userRole, isSuperAdmin, navigate]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
-    
-    // Clear error when user starts typing
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -51,34 +49,32 @@ const LoginPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email or username is required';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     try {
       const result = await login(formData).unwrap();
       toast.success(result.message || 'Login successful');
-      
-      // Navigation will be handled by the useEffect
     } catch (error) {
       console.error('Login failed:', error);
       const errorMessage = error.data?.message || 'Login failed. Please try again.';
       toast.error(errorMessage);
-      
+
       if (error.status === 401) {
         setErrors({ password: 'Invalid credentials' });
       } else if (error.status === 404) {
@@ -149,8 +145,10 @@ const LoginPage = () => {
               <div className="flex items-center">
                 <input
                   id="remember-me"
-                  name="remember-me"
+                  name="rememberMe"
                   type="checkbox"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">

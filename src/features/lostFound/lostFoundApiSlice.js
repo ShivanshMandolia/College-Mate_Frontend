@@ -20,7 +20,7 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: '/found-item',
+          url: '/items/found-item',
           method: 'POST',
           body: formData,
           formData: true,
@@ -46,7 +46,7 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: '/claimed-request',
+          url: '/items/claimed-request',
           method: 'POST',
           body: formData,
           formData: true,
@@ -56,23 +56,23 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
     }),
     
     getAllFoundItems: builder.query({
-      query: () => '/found-items',
+      query: () => '/items/found-items',
       providesTags: ['LostFound'],
     }),
     
     getMyListings: builder.query({
-      query: () => '/my-listings',
+      query: () => '/items/my-listings',
       providesTags: ['LostFound'],
     }),
     
     getMyRequests: builder.query({
-      query: () => '/my-requests',
+      query: () => '/items/my-requests',
       providesTags: ['LostFound'],
     }),
     
     updateClaimStatus: builder.mutation({
       query: (statusData) => ({
-        url: '/update-claim-status',
+        url: '/items/update-claim-status',
         method: 'POST',
         body: statusData,
       }),
@@ -81,7 +81,7 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
     
     getClaimsForMyItem: builder.mutation({
       query: (itemId) => ({
-        url: '/claims',
+        url: '/items/claims',
         method: 'POST',
         body: { itemId },
       }),
@@ -104,7 +104,7 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: '/request',
+          url: '/items/request',
           method: 'POST',
           body: formData,
           formData: true,
@@ -114,12 +114,12 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
     }),
     
     getAllLostRequests: builder.query({
-      query: () => '/requests',
+      query: () => '/items/requests',
       providesTags: ['LostFound'],
     }),
     
     getMyLostRequests: builder.query({
-      query: () => '/my-requests',
+      query: () => '/items/my-requests',
       providesTags: ['LostFound'],
     }),
   }),
