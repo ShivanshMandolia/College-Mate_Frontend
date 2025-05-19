@@ -68,7 +68,7 @@ const StudentDashboard = () => {
             </div>
           </Link>
 
-          <Link to="#" className="dashboard-card hover:translate-y-[-5px] col-span-1 flex flex-col">
+          <Link to="/student/complaints" className="dashboard-card hover:translate-y-[-5px] col-span-1 flex flex-col">
             <div className="card-header bg-green-50 dark:bg-green-900/20">
               <h3 className="text-lg font-semibold text-green-700 dark:text-green-300">Complaints</h3>
               <MessageSquare className="h-5 w-5 text-green-600 dark:text-green-400" />

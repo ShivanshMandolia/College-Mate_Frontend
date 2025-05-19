@@ -25,6 +25,9 @@ import MyLostListingsPage from './pages/student/MyLostRequests.jsx';
  import PostFoundItem from './pages/student/postfounditem';
   import PostLostRequest from './pages/student/postlostitempage';
   import MyFoundListingsPage from './pages/student/mylistings.jsx';
+  import ComplaintDetail from './pages/student/ComplaintDetail.jsx';
+  import MyComplaints from './pages/student/MyComplaints.jsx';
+  import CreateComplaint from './pages/student/CreateComplaint.jsx';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/dashboard';
@@ -93,7 +96,11 @@ function App() {
                   <Route path="my-lost-listings" element={<MyLostListingsPage />} />
                   <Route path="post-found-item" element={<PostFoundItem />} />
                  <Route path="my-found-listings" element={<MyFoundListingsPage />} />   
-                   <Route path="post-lost-item" element={<PostLostRequest />} />  
+                   <Route path="post-lost-item" element={<PostLostRequest />} />
+                   <Route path="complaints" element={<MyComplaints />} />
+                   // In your routes configuration
+<Route path="/complaints/create" element={<CreateComplaint />} />
+<Route path="/complaints/:complaintId" element={<ComplaintDetail />} /> 
                 </Routes>
               </ProtectedRoute>
             } />

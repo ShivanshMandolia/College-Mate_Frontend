@@ -20,7 +20,7 @@ export const complaintsApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: '/complaints',
+          url: '/comp/complaints',
           method: 'POST',
           body: formData,
           formData: true,
@@ -30,18 +30,25 @@ export const complaintsApiSlice = apiSlice.injectEndpoints({
     }),
     
     getMyComplaints: builder.query({
-      query: () => '/my-complaints',
+      query: () => '/comp/my-complaints',
       providesTags: ['Complaints'],
     }),
     
     getAllComplaints: builder.query({
-      query: () => '/all-complaints',
+      query: () => '/comp/all-complaints',
       providesTags: ['Complaints'],
+    }),
+    
+    getComplaintById: builder.query({
+      query: (complaintId) => `/comp/complaints/${complaintId}`,
+      providesTags: (result, error, complaintId) => [
+        { type: 'Complaints', id: complaintId },
+      ],
     }),
     
     updateComplaintStatus: builder.mutation({
       query: (statusData) => ({
-        url: '/update-complaint-status',
+        url: '/comp/update-complaint-status',
         method: 'POST',
         body: statusData,
       }),
@@ -50,23 +57,33 @@ export const complaintsApiSlice = apiSlice.injectEndpoints({
     
     deleteComplaint: builder.mutation({
       query: (complaintId) => ({
-        url: `/complaints/${complaintId}`,
+        url: `/comp/complaints/${complaintId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Complaints'],
     }),
     
-    assignComplaint: builder.mutation({
-      query: (assignData) => ({
-        url: '/assign-complaint',
+    assignComplaintToAdmin: builder.mutation({
+      query: ({ complaintId, assignedTo }) => ({
+        url: `/comp/assign-complaint/${complaintId}/${assignedTo}`,
         method: 'POST',
-        body: assignData,
       }),
       invalidatesTags: ['Complaints'],
     }),
     
+    getAdminComplaintStatus: builder.query({
+      query: () => '/comp/admin-status',
+      providesTags: ['AdminStatus'],
+    }),
+    
+    getComplaintNotifications: builder.query({
+      query: () => '/comp/notifications',
+      providesTags: ['Notifications'],
+    }),
+    
     searchComplaints: builder.query({
-      query: (searchQuery) => `/search-complaints?query=${searchQuery}`,
+      query: (searchQuery) => `/comp/search-complaints?query=${encodeURIComponent(searchQuery)}`,
+      providesTags: ['Complaints'],
     }),
   }),
 });
@@ -75,8 +92,11 @@ export const {
   useCreateComplaintMutation,
   useGetMyComplaintsQuery,
   useGetAllComplaintsQuery,
+  useGetComplaintByIdQuery,
   useUpdateComplaintStatusMutation,
   useDeleteComplaintMutation,
-  useAssignComplaintMutation,
+  useAssignComplaintToAdminMutation,
+  useGetAdminComplaintStatusQuery,
+  useGetComplaintNotificationsQuery,
   useSearchComplaintsQuery,
 } = complaintsApiSlice;
