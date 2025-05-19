@@ -19,21 +19,18 @@ import HomePage from './components/HomePage.jsx';
 // Student Pages
 import StudentDashboard from './pages/student/dashboard';
 import LostAndFoundPage from './pages/student/lostandfoundpage';
- import FoundItemDetailPage from './pages/student/FoundItemDetailpage.jsx';
- import  LostItemDetailPage  from './pages/student/LostItemDetailPage.jsx'
+import FoundItemDetailPage from './pages/student/FoundItemDetailpage.jsx';
+import LostItemDetailPage from './pages/student/LostItemDetailPage.jsx';
 import MyLostListingsPage from './pages/student/MyLostRequests.jsx';
- import PostFoundItem from './pages/student/postfounditem';
-  import PostLostRequest from './pages/student/postlostitempage';
-  import MyFoundListingsPage from './pages/student/mylistings.jsx';
-  import ComplaintDetail from './pages/student/ComplaintDetail.jsx';
-  import MyComplaints from './pages/student/MyComplaints.jsx';
-  import CreateComplaint from './pages/student/CreateComplaint.jsx';
+import PostFoundItem from './pages/student/postfounditem';
+import PostLostRequest from './pages/student/postlostitempage';
+import MyFoundListingsPage from './pages/student/mylistings.jsx';
+import ComplaintDetail from './pages/student/ComplaintDetail.jsx';
+import MyComplaints from './pages/student/MyComplaints.jsx';
+import CreateComplaint from './pages/student/CreateComplaint.jsx';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/dashboard';
-// import AdminComplaints from './pages/admin/admincomplainents';
-// import CreateEventPage from './pages/admin/createeventpage';
-// import GetAllEventsPage from './pages/admin/getalleventspage';
 
 // Super Admin Pages
 import SuperAdminDashboard from './pages/superadmin/dashboard';
@@ -91,16 +88,15 @@ function App() {
                 <Routes>
                   <Route path="dashboard" element={<StudentDashboard />} />
                   <Route path="lost-found" element={<LostAndFoundPage />} />
-                    <Route path="found-item/:itemId" element={<FoundItemDetailPage />} />
-                     <Route path="lost-item/:itemId" element={<LostItemDetailPage />} />
+                  <Route path="found-item/:itemId" element={<FoundItemDetailPage />} />
+                  <Route path="lost-item/:itemId" element={<LostItemDetailPage />} />
                   <Route path="my-lost-listings" element={<MyLostListingsPage />} />
                   <Route path="post-found-item" element={<PostFoundItem />} />
-                 <Route path="my-found-listings" element={<MyFoundListingsPage />} />   
-                   <Route path="post-lost-item" element={<PostLostRequest />} />
-                   <Route path="complaints" element={<MyComplaints />} />
-                   // In your routes configuration
-<Route path="/complaints/create" element={<CreateComplaint />} />
-<Route path="/complaints/:complaintId" element={<ComplaintDetail />} /> 
+                  <Route path="my-found-listings" element={<MyFoundListingsPage />} />   
+                  <Route path="post-lost-item" element={<PostLostRequest />} />
+                  <Route path="complaints" element={<MyComplaints />} />
+                  <Route path="complaints/create" element={<CreateComplaint />} />
+                  <Route path="complaints/:complaintId" element={<ComplaintDetail />} />
                 </Routes>
               </ProtectedRoute>
             } />
@@ -110,9 +106,6 @@ function App() {
               <ProtectedRoute allowedRoles={['admin']}>
                 <Routes>
                   <Route path="dashboard" element={<AdminDashboard />} />
-                  {/* <Route path="complaints" element={<AdminComplaints />} />
-                  <Route path="create-event" element={<CreateEventPage />} />
-                  <Route path="events" element={<GetAllEventsPage />} /> */}
                 </Routes>
               </ProtectedRoute>
             } />
