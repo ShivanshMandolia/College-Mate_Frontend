@@ -29,11 +29,17 @@ import ComplaintDetail from './pages/student/ComplaintDetail.jsx';
 import MyComplaints from './pages/student/MyComplaints.jsx';
 import CreateComplaint from './pages/student/CreateComplaint.jsx';
 
+
 // Admin Pages
 import AdminDashboard from './pages/admin/dashboard';
+import AdminComplaintsList from './pages/admin/admincomplainents.jsx';
+import AdminComplaintDetail from './pages/admin/AdminComplaintsView.jsx';
 
 // Super Admin Pages
 import SuperAdminDashboard from './pages/superadmin/dashboard';
+import ComplaintDetail1 from './pages/superadmin/ComplaintDetail.jsx';
+import ComplaintsList from './pages/superadmin/ComplaintPage.jsx';
+import AssignComplaint from './pages/superadmin/AdminAssign.jsx';
 
 // ScrollToTop component to scroll to top on route change
 const ScrollToTop = () => {
@@ -60,11 +66,11 @@ const AuthWrapper = () => {
     return <Navigate to="/superadmin/dashboard" />;
   }
 
-  if (userRole === 'admin') {
+  else if (userRole === 'admin') {
     return <Navigate to="/admin/dashboard" />;
   }
 
-  return <Navigate to="/student/dashboard" />;
+  else return <Navigate to="/student/dashboard" />;
 };
 
 function App() {
@@ -106,15 +112,24 @@ function App() {
               <ProtectedRoute allowedRoles={['admin']}>
                 <Routes>
                   <Route path="dashboard" element={<AdminDashboard />} />
+                    <Route path="complaints" element={<AdminComplaintsList />} />
+
+                      <Route path="complaints/:complaintId" element={<AdminComplaintDetail />} />
+
+                
                 </Routes>
               </ProtectedRoute>
             } />
 
             {/* Super Admin Routes */}
             <Route path="superadmin/*" element={
-              <ProtectedRoute allowedRoles={['superadmin']} requireSuperAdmin={true}>
+              <ProtectedRoute allowedRoles={['admin']} requireSuperAdmin={true}>
                 <Routes>
                   <Route path="dashboard" element={<SuperAdminDashboard />} />
+                   <Route path="complaints" element={<ComplaintsList />} />
+                  <Route path="complaints/:complaintId" element={<ComplaintDetail1 />} />
+                      <Route path="assign-complaint/:complaintId" element={<AssignComplaint />} />
+
                 </Routes>
               </ProtectedRoute>
             } />

@@ -44,14 +44,12 @@ const CreateComplaint = () => {
 
   // Category options for the dropdown
   const categoryOptions = [
-    'Road Issues',
-    'Water Supply',
-    'Electricity',
-    'Garbage Collection',
-    'Street Lighting',
-    'Public Safety',
-    'Noise Pollution',
-    'Others',
+   'hostel',
+   'wifi',
+   'classroom',
+   'mess',
+   'other'
+
   ];
 
   // Handle input change

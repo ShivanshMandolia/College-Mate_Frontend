@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllComplaintsQuery, useSearchComplaintsQuery } from '../../features/complaints/complaintsApiSlice';
 import { useDispatch } from 'react-redux';
@@ -16,7 +16,7 @@ import {
   Loader2
 } from 'lucide-react';
 
-const AdminComplaintsList = () => {
+const ComplaintsList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
@@ -24,7 +24,7 @@ const AdminComplaintsList = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
   
-  // Use the getAllComplaints query - this will only return complaints assigned to the admin
+  // Use the getAllComplaints query
   const { 
     data: complaintsResponse, 
     isLoading, 
@@ -60,7 +60,7 @@ const AdminComplaintsList = () => {
   // Handle view details
   const handleViewDetails = (complaint) => {
     dispatch(setSelectedComplaint(complaint));
-    navigate(`/admin/complaints/${complaint._id}`);
+    navigate(`/superadmin/complaints/${complaint._id}`);
   };
 
   // Status badge component
@@ -138,12 +138,19 @@ const AdminComplaintsList = () => {
     );
   }
 
+  // Debug logging to help troubleshoot
+  console.log('Complaints response:', complaintsResponse);
+  console.log('Extracted complaints:', complaints);
+  console.log('Search response:', searchResponse);
+  console.log('Extracted search results:', searchResults);
+  console.log('Filtered complaints:', filteredComplaints);
+
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <MessageSquare className="h-6 w-6 text-indigo-600 mr-2" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Assigned Complaints</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Complaints Management</h1>
         </div>
         <div className="flex items-center">
           <div className="relative mr-4">
@@ -243,7 +250,7 @@ const AdminComplaintsList = () => {
               ) : (
                 <tr>
                   <td colSpan="7" className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                    {isLoading ? 'Loading complaints...' : 'No complaints assigned to you yet'}
+                    {isLoading ? 'Loading complaints...' : 'No complaints found'}
                   </td>
                 </tr>
               )}
@@ -255,4 +262,4 @@ const AdminComplaintsList = () => {
   );
 };
 
-export default AdminComplaintsList;
+export default ComplaintsList;

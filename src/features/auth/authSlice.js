@@ -36,7 +36,12 @@ export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 
 // Role-based selectors
 export const selectUserRole = (state) => state.auth.user?.role;
-export const selectIsSuperAdmin = (state) => state.auth.user?.isSuperAdmin === true;
-export const selectIsAdmin = (state) => state.auth.user?.role === 'admin';
+// True only if user is superadmin
+export const selectIsSuperAdmin = (state) =>
+  state.auth.user?.role === 'admin' && state.auth.user?.isSuperAdmin === true;
+
+// True only if user is normal admin (not superadmin)
+export const selectIsAdmin = (state) =>
+  state.auth.user?.role === 'admin' && state.auth.user?.isSuperAdmin !== true;
 
 export default authSlice.reducer;
