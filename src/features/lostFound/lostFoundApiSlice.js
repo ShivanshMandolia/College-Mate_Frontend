@@ -3,6 +3,7 @@ import { apiSlice } from '../api/apiSlice';
 
 export const lostFoundApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Create a new found item
     createFoundItem: builder.mutation({
       query: (itemData) => {
         const formData = new FormData();
@@ -29,79 +30,8 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['LostFound'],
     }),
     
-    createClaimedRequest: builder.mutation({
-      query: (claimData) => {
-        const formData = new FormData();
-        
-        // Add text data
-        Object.keys(claimData).forEach(key => {
-          if (key !== 'image') {
-            formData.append(key, claimData[key]);
-          }
-        });
-        
-        // Add image file if present
-        if (claimData.image) {
-          formData.append('image', claimData.image);
-        }
-        
-        return {
-          url: '/items/claimed-request',
-          method: 'POST',
-          body: formData,
-          formData: true,
-        };
-      },
-      invalidatesTags: ['LostFound'],
-    }),
-    
-    getAllFoundItems: builder.query({
-      query: () => '/items/found-items',
-      providesTags: ['LostFound'],
-    }),
-    
-    getFoundItemById: builder.query({
-      query: (itemId) => `/items/found-item/${itemId}`,
-      providesTags: (result, error, itemId) => [
-        { type: 'LostFound', id: itemId }
-      ],
-    }),
-    
-    getMyListings: builder.query({
-      query: () => '/items/my-listings',
-      providesTags: ['LostFound'],
-    }),
-    
-    getMyRequests: builder.query({
-      query: () => '/items/my-requests',
-      providesTags: ['LostFound'],
-    }),
-    
-    updateClaimStatus: builder.mutation({
-      query: (statusData) => ({
-        url: '/items/update-claim-status',
-        method: 'POST',
-        body: statusData,
-      }),
-      invalidatesTags: ['LostFound'],
-    }),
-    
-    getClaimsForMyItem: builder.mutation({
-      query: (itemId) => ({
-        url: '/items/claims',
-        method: 'POST',
-        body: { itemId },
-      }),
-    }),
-    
-    getClaimRequestById: builder.query({
-      query: (claimId) => `/items/claim/${claimId}`,
-      providesTags: (result, error, claimId) => [
-        { type: 'LostFound', id: claimId }
-      ],
-    }),
-    
-    createLostItemRequest: builder.mutation({
+    // Create a new lost item request
+    createLostItem: builder.mutation({
       query: (requestData) => {
         const formData = new FormData();
         
@@ -118,7 +48,7 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: '/items/request',
+          url: '/items/lost-item',
           method: 'POST',
           body: formData,
           formData: true,
@@ -127,37 +57,75 @@ export const lostFoundApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ['LostFound'],
     }),
     
-    getAllLostRequests: builder.query({
-      query: () => '/items/requests',
+    // Get all found items
+    getAllFoundItems: builder.query({
+      query: () => '/items/found-items',
       providesTags: ['LostFound'],
     }),
     
-    getMyLostRequests: builder.query({
-      query: () => '/items/my-lost-requests',
+    // Get all lost items
+    getAllLostItems: builder.query({
+      query: () => '/items/lost-items',
       providesTags: ['LostFound'],
     }),
     
-    getLostItemRequestById: builder.query({
-      query: (requestId) => `/items/lost-request/${requestId}`,
+    // Get a specific found item by ID
+    getFoundItemById: builder.query({
+      query: (itemId) => `/items/found-item/${itemId}`,
+      providesTags: (result, error, itemId) => [
+        { type: 'LostFound', id: itemId }
+      ],
+    }),
+    
+    // Get a specific lost item by ID
+    getLostItemById: builder.query({
+      query: (requestId) => `/items/lost-item/${requestId}`,
       providesTags: (result, error, requestId) => [
         { type: 'LostFound', id: requestId }
       ],
+    }),
+    
+    // Delete a found item
+    deleteFoundItem: builder.mutation({
+      query: (itemId) => ({
+        url: `/items/found-item/${itemId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['LostFound'],
+    }),
+    
+    // Delete a lost item
+    deleteLostItem: builder.mutation({
+      query: (itemId) => ({
+        url: `/items/lost-item/${itemId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['LostFound'],
+    }),
+    
+    // Get found items posted by the logged-in user
+    getMyFoundListings: builder.query({
+      query: () => '/items/my-found-listings',
+      providesTags: ['LostFound'],
+    }),
+    
+    // Get lost items posted by the logged-in user
+    getMyLostListings: builder.query({
+      query: () => '/items/my-lost-listings',
+      providesTags: ['LostFound'],
     }),
   }),
 });
 
 export const {
   useCreateFoundItemMutation,
-  useCreateClaimedRequestMutation,
+  useCreateLostItemMutation,
   useGetAllFoundItemsQuery,
+  useGetAllLostItemsQuery,
   useGetFoundItemByIdQuery,
-  useGetMyListingsQuery,
-  useGetMyRequestsQuery,
-  useUpdateClaimStatusMutation,
-  useGetClaimsForMyItemMutation,
-  useGetClaimRequestByIdQuery,
-  useCreateLostItemRequestMutation,
-  useGetAllLostRequestsQuery,
-  useGetMyLostRequestsQuery,
-  useGetLostItemRequestByIdQuery,
+  useGetLostItemByIdQuery,
+  useDeleteFoundItemMutation,
+  useDeleteLostItemMutation,
+  useGetMyFoundListingsQuery,
+  useGetMyLostListingsQuery,
 } = lostFoundApiSlice;

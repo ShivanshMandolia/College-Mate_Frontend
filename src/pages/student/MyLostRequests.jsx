@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  useGetMyFoundListingsQuery,
-  useDeleteFoundItemMutation
+  useGetMyLostListingsQuery,
+  useDeleteLostItemMutation
 } from '../../features/lostFound/lostFoundApiSlice';
 import { Calendar, MapPin, Tag, Eye, Trash2, AlertCircle } from 'lucide-react';
 
-const MyFoundListingsPage = () => {
+const MyLostListingsPage = () => {
   const [deleteAlert, setDeleteAlert] = useState({ show: false, itemId: null });
   
   const { 
-    data: myFoundItems, 
+    data: myLostItems, 
     isLoading, 
     isError, 
     refetch 
-  } = useGetMyFoundListingsQuery();
+  } = useGetMyLostListingsQuery();
   
-  const [deleteFoundItem, { isLoading: isDeleting }] = useDeleteFoundItemMutation();
+  const [deleteLostItem, { isLoading: isDeleting }] = useDeleteLostItemMutation();
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -29,7 +29,7 @@ const MyFoundListingsPage = () => {
 
   const confirmDelete = async () => {
     try {
-      await deleteFoundItem(deleteAlert.itemId).unwrap();
+      await deleteLostItem(deleteAlert.itemId).unwrap();
       refetch(); // Refresh the list after deletion
       setDeleteAlert({ show: false, itemId: null });
     } catch (error) {
@@ -44,7 +44,7 @@ const MyFoundListingsPage = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -55,11 +55,11 @@ const MyFoundListingsPage = () => {
         <div className="bg-red-50 inline-flex rounded-full p-4">
           <AlertCircle className="h-8 w-8 text-red-500" />
         </div>
-        <h3 className="mt-4 text-lg font-medium text-gray-900">Error loading your listings</h3>
-        <p className="mt-2 text-gray-500">There was a problem fetching your found item listings.</p>
+        <h3 className="mt-4 text-lg font-medium text-gray-900">Error loading your requests</h3>
+        <p className="mt-2 text-gray-500">There was a problem fetching your lost item requests.</p>
         <button 
           onClick={refetch}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
           Try Again
         </button>
@@ -67,7 +67,7 @@ const MyFoundListingsPage = () => {
     );
   }
 
-  const items = myFoundItems?.data || [];
+  const items = myLostItems?.data || [];
 
   if (items.length === 0) {
     return (
@@ -75,24 +75,24 @@ const MyFoundListingsPage = () => {
         <div className="flex items-center mb-6">
           <Link 
             to="/student/lost-found" 
-            className="text-blue-600 hover:text-blue-800"
+            className="text-indigo-600 hover:text-indigo-800"
           >
             &larr; Back to Lost and Found
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900 ml-4">My Found Item Listings</h1>
+          <h1 className="text-2xl font-bold text-gray-900 ml-4">My Lost Item Requests</h1>
         </div>
         
         <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="bg-blue-50 inline-flex rounded-full p-4">
-            <Tag className="h-8 w-8 text-blue-500" />
+          <div className="bg-indigo-50 inline-flex rounded-full p-4">
+            <Tag className="h-8 w-8 text-indigo-500" />
           </div>
-          <h3 className="mt-4 text-lg font-medium text-gray-900">No found items posted yet</h3>
-          <p className="mt-2 text-gray-500">When you post a found item, it will appear here.</p>
+          <h3 className="mt-4 text-lg font-medium text-gray-900">No lost item requests posted yet</h3>
+          <p className="mt-2 text-gray-500">When you post a lost item request, it will appear here.</p>
           <Link
-            to="/student/post-found-item"
-            className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            to="/student/post-lost-item"
+            className="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
           >
-            Post a Found Item
+            Post a Lost Item Request
           </Link>
         </div>
       </div>
@@ -104,11 +104,11 @@ const MyFoundListingsPage = () => {
       <div className="flex items-center mb-6">
         <Link 
           to="/student/lost-found" 
-          className="text-blue-600 hover:text-blue-800"
+          className="text-indigo-600 hover:text-indigo-800"
         >
           &larr; Back to Lost and Found
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900 ml-4">My Found Item Listings</h1>
+        <h1 className="text-2xl font-bold text-gray-900 ml-4">My Lost Item Requests</h1>
       </div>
 
       {/* Delete confirmation modal */}
@@ -116,7 +116,7 @@ const MyFoundListingsPage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
-            <p className="text-gray-600 mb-6">Are you sure you want to delete this found item listing? This action cannot be undone.</p>
+            <p className="text-gray-600 mb-6">Are you sure you want to delete this lost item request? This action cannot be undone.</p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={cancelDelete}
@@ -176,8 +176,8 @@ const MyFoundListingsPage = () => {
               
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <Link
-                  to={`/student/found-item/${item._id}`}
-                  className="py-2 flex justify-center items-center bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  to={`/student/lost-item/${item._id}`}
+                  className="py-2 flex justify-center items-center bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                 >
                   <Eye className="h-4 w-4 mr-2" />
                   View Details
@@ -198,4 +198,4 @@ const MyFoundListingsPage = () => {
   );
 };
 
-export default MyFoundListingsPage;
+export default MyLostListingsPage;

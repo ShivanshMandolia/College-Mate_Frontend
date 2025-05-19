@@ -3,14 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   foundItems: [],
-  lostRequests: [],
-  myListings: [],
-  myRequests: [],
-  myLostRequests: [],
-  selectedItem: null,
-  selectedLostRequest: null,
-  selectedClaim: null,
-  claims: [],
+  lostItems: [],
+  myFoundListings: [],
+  myLostListings: [],
+  selectedFoundItem: null,
+  selectedLostItem: null,
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
@@ -19,53 +16,35 @@ const lostFoundSlice = createSlice({
   name: 'lostFound',
   initialState,
   reducers: {
-    setSelectedItem: (state, action) => {
-      state.selectedItem = action.payload;
+    setSelectedFoundItem: (state, action) => {
+      state.selectedFoundItem = action.payload;
     },
-    clearSelectedItem: (state) => {
-      state.selectedItem = null;
+    clearSelectedFoundItem: (state) => {
+      state.selectedFoundItem = null;
     },
-    setSelectedLostRequest: (state, action) => {
-      state.selectedLostRequest = action.payload;
+    setSelectedLostItem: (state, action) => {
+      state.selectedLostItem = action.payload;
     },
-    clearSelectedLostRequest: (state) => {
-      state.selectedLostRequest = null;
-    },
-    setSelectedClaim: (state, action) => {
-      state.selectedClaim = action.payload;
-    },
-    clearSelectedClaim: (state) => {
-      state.selectedClaim = null;
-    },
-    setClaims: (state, action) => {
-      state.claims = action.payload;
-    },
-    clearClaims: (state) => {
-      state.claims = [];
+    clearSelectedLostItem: (state) => {
+      state.selectedLostItem = null;
     },
   },
 });
 
-export const { 
-  setSelectedItem, 
-  clearSelectedItem,
-  setSelectedLostRequest,
-  clearSelectedLostRequest,
-  setSelectedClaim,
-  clearSelectedClaim,
-  setClaims,
-  clearClaims,
+export const {
+  setSelectedFoundItem,
+  clearSelectedFoundItem,
+  setSelectedLostItem,
+  clearSelectedLostItem,
 } = lostFoundSlice.actions;
 
 // Selectors
 export const selectFoundItems = (state) => state.lostFound.foundItems;
-export const selectLostRequests = (state) => state.lostFound.lostRequests;
-export const selectMyListings = (state) => state.lostFound.myListings;
-export const selectMyRequests = (state) => state.lostFound.myRequests;
-export const selectMyLostRequests = (state) => state.lostFound.myLostRequests;
-export const selectSelectedItem = (state) => state.lostFound.selectedItem;
-export const selectSelectedLostRequest = (state) => state.lostFound.selectedLostRequest;
-export const selectSelectedClaim = (state) => state.lostFound.selectedClaim;
-export const selectClaims = (state) => state.lostFound.claims;
+export const selectLostItems = (state) => state.lostFound.lostItems;
+export const selectMyFoundListings = (state) => state.lostFound.myFoundListings;
+export const selectMyLostListings = (state) => state.lostFound.myLostListings;
+export const selectSelectedFoundItem = (state) => state.lostFound.selectedFoundItem;
+export const selectSelectedLostItem = (state) => state.lostFound.selectedLostItem;
+
 
 export default lostFoundSlice.reducer;
