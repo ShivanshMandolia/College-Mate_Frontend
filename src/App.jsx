@@ -34,12 +34,17 @@ import CreateComplaint from './pages/student/CreateComplaint.jsx';
 import AdminDashboard from './pages/admin/dashboard';
 import AdminComplaintsList from './pages/admin/admincomplainents.jsx';
 import AdminComplaintDetail from './pages/admin/AdminComplaintsView.jsx';
+import PlacementDashboard from './pages/admin/PlacementDashboard.jsx';
+import PlacementUpdate from './pages/admin/PlacementUpdate.jsx';
 
 // Super Admin Pages
 import SuperAdminDashboard from './pages/superadmin/dashboard';
 import ComplaintDetail1 from './pages/superadmin/ComplaintDetail.jsx';
 import ComplaintsList from './pages/superadmin/ComplaintPage.jsx';
 import AssignComplaint from './pages/superadmin/AdminAssign.jsx';
+import PlacementList from './pages/superadmin/placementmainpage.jsx';
+import CreatePlacement from './pages/superadmin/CreatePlacement.jsx';
+import PlacementDetails from './pages/admin/PlacementDetails.jsx';
 
 // ScrollToTop component to scroll to top on route change
 const ScrollToTop = () => {
@@ -112,7 +117,12 @@ function App() {
               <ProtectedRoute allowedRoles={['admin']}>
                 <Routes>
                   <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="complaints" element={<AdminComplaintsList />} />
+                   <Route path="placements" element={<PlacementDashboard />} />
+                   <Route path="placements" element={<PlacementList />} />
+                    <Route path="complaints" element={<ComplaintsList />} />
+
+ <Route path="placements/:placementId" element={<PlacementDetails />} />
+                    <Route path="placements/:placementId/update" element={<PlacementUpdate />} />
 
                       <Route path="complaints/:complaintId" element={<AdminComplaintDetail />} />
 
@@ -129,6 +139,8 @@ function App() {
                    <Route path="complaints" element={<ComplaintsList />} />
                   <Route path="complaints/:complaintId" element={<ComplaintDetail1 />} />
                       <Route path="assign-complaint/:complaintId" element={<AssignComplaint />} />
+                      <Route path="placements" element={<PlacementList />} />
+                      <Route path="create" element={<CreatePlacement />} />
 
                 </Routes>
               </ProtectedRoute>
