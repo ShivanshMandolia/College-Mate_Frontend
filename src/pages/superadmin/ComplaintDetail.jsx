@@ -21,7 +21,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 
-const ComplaintDetail1 = () => {
+const ComplaintDetail = () => {
   const { complaintId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,13 +30,16 @@ const ComplaintDetail1 = () => {
   
   // Fetch complaint details if not already in state
   const { 
-    data: complaintData, 
+    data: complaintResponse, 
     isLoading, 
     isError, 
     error 
   } = useGetComplaintByIdQuery(complaintId, {
     skip: !!selectedComplaint && selectedComplaint._id === complaintId
   });
+  
+  // Extract complaint from response
+  const complaintData = complaintResponse?.data || complaintResponse;
   
   // Status update mutation
   const [
@@ -51,10 +54,10 @@ const ComplaintDetail1 = () => {
   
   // Set complaint in redux when fetched
   useEffect(() => {
-    if (complaintData && !selectedComplaint) {
+    if (complaintData && (!selectedComplaint || selectedComplaint._id !== complaintId)) {
       dispatch(setSelectedComplaint(complaintData));
     }
-  }, [complaintData, dispatch, selectedComplaint]);
+  }, [complaintData, dispatch, selectedComplaint, complaintId]);
   
   // Status update handler
   const handleStatusChange = async (newStatus) => {
@@ -84,6 +87,22 @@ const ComplaintDetail1 = () => {
   // Navigate to admin assignment page
   const handleAssignToAdmin = () => {
     navigate(`/superadmin/assign-complaint/${complaintId}`);
+  };
+  
+  // Helper function to get admin email
+  const getAssignedAdminEmail = () => {
+    if (!complaint) return 'Not assigned';
+    
+    if (complaint.assignedTo) {
+      // If assignedTo is an object with email property
+      if (typeof complaint.assignedTo === 'object' && complaint.assignedTo.email) {
+        return complaint.assignedTo.email;
+      }
+      // If assignedTo is just the ID, show a placeholder
+      return 'Admin (ID: ' + complaint.assignedTo + ')';
+    }
+    
+    return 'Not assigned yet';
   };
   
   if (isLoading) {
@@ -194,7 +213,7 @@ const ComplaintDetail1 = () => {
                   <span>Assigned To</span>
                 </div>
                 <p className="font-medium text-gray-900 dark:text-white">
-                  {complaint.assignedTo?.email || 'Not assigned yet'}
+                  {getAssignedAdminEmail()}
                 </p>
               </div>
             </div>
@@ -311,17 +330,26 @@ const ComplaintDetail1 = () => {
               <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Admin Assignment</h2>
               <button
                 onClick={handleAssignToAdmin}
-                className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                disabled={complaint.status === 'resolved'}
+                className={`w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium 
+                  ${complaint.status === 'resolved' 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                  }`}
               >
                 <UserCheck className="h-4 w-4 mr-2" />
                 {complaint.assignedTo ? 'Reassign Complaint' : 'Assign Complaint'}
               </button>
               
-              {complaint.assignedTo && (
+              {complaint.status === 'resolved' ? (
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  Currently assigned to <span className="font-medium">{complaint.assignedTo.email}</span>
+                  Resolved complaints cannot be reassigned
                 </p>
-              )}
+              ) : complaint.assignedTo ? (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  Currently assigned to <span className="font-medium">{getAssignedAdminEmail()}</span>
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
@@ -371,4 +399,4 @@ const getStatusBadge = (status) => {
   }
 };
 
-export default ComplaintDetail1;
+export default ComplaintDetail;
