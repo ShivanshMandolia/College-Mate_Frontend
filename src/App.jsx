@@ -28,6 +28,9 @@ import MyFoundListingsPage from './pages/student/mylistings.jsx';
 import ComplaintDetail from './pages/student/ComplaintDetail.jsx';
 import MyComplaints from './pages/student/MyComplaints.jsx';
 import CreateComplaint from './pages/student/CreateComplaint.jsx';
+import StudentPlacementsPage from './pages/student/placementpage.jsx';
+import PlacementDetailPage from './pages/student/PlacementDetail.jsx';
+import PlacementRegistrationPage from './pages/student/PlacementRegister.jsx';
 
 
 // Admin Pages
@@ -108,6 +111,10 @@ function App() {
                   <Route path="complaints" element={<MyComplaints />} />
                   <Route path="complaints/create" element={<CreateComplaint />} />
                   <Route path="complaints/:complaintId" element={<ComplaintDetail />} />
+                   <Route path="placements" element={<StudentPlacementsPage />} />
+                    <Route path="placements/:placementId" element={<PlacementDetailPage />} />
+                   <Route path="placements/:placementId/register" element={<PlacementRegistrationPage />} />
+
                 </Routes>
               </ProtectedRoute>
             } />
@@ -119,7 +126,7 @@ function App() {
                   <Route path="dashboard" element={<AdminDashboard />} />
                    <Route path="placements" element={<PlacementDashboard />} />
                    <Route path="placements" element={<PlacementList />} />
-                    <Route path="complaints" element={<ComplaintsList />} />
+                    <Route path="complaints" element={<AdminComplaintsList />} />
 
  <Route path="placements/:placementId" element={<PlacementDetails />} />
                     <Route path="placements/:placementId/update" element={<PlacementUpdate />} />

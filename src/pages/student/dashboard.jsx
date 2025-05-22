@@ -87,7 +87,7 @@ const StudentDashboard = () => {
             </div>
           </Link>
 
-          <Link to="#" className="dashboard-card hover:translate-y-[-5px] col-span-1 flex flex-col">
+          <Link to="/student/placements" className="dashboard-card hover:translate-y-[-5px] col-span-1 flex flex-col">
             <div className="card-header bg-purple-50 dark:bg-purple-900/20">
               <h3 className="text-lg font-semibold text-purple-700 dark:text-purple-300">Placements</h3>
               <Briefcase className="h-5 w-5 text-purple-600 dark:text-purple-400" />

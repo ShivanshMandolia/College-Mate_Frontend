@@ -41,27 +41,33 @@ const PlacementDetails = () => {
   
   // Fetch placement details if not in Redux state
   const { 
-    data: placementData, 
-    isLoading: isLoadingPlacement 
+    data: placementResponse, 
+    isLoading: isLoadingPlacement,
+    error: placementError 
   } = useGetPlacementDetailsQuery(placementId, {
     skip: !!selectedPlacement
   });
   
   // Fetch registered students
   const { 
-    data: registeredStudentsData, 
-    isLoading: isLoadingStudents 
+    data: registeredStudentsResponse, 
+    isLoading: isLoadingStudents,
+    error: studentsError,
+    refetch: refetchStudents
   } = useGetAllRegisteredStudentsForPlacementQuery(placementId);
+  
+  console.log("Placement Response:", placementResponse);
+  console.log("Registered Students Response:", registeredStudentsResponse);
   
   // Set selected placement in Redux if it's not already there
   useEffect(() => {
-    if (!selectedPlacement && placementData) {
-      dispatch(setSelectedPlacement(placementData.data));
+    if (!selectedPlacement && placementResponse?.success && placementResponse?.data) {
+      dispatch(setSelectedPlacement(placementResponse.data));
     }
-  }, [placementData, selectedPlacement, dispatch]);
+  }, [placementResponse, selectedPlacement, dispatch]);
   
-  // Get the placement to display
-  const placement = selectedPlacement || (placementData ? placementData.data : null);
+  // Get the placement to display - FIXED: Use placementResponse.data when available
+  const placement = selectedPlacement || (placementResponse?.success ? placementResponse.data : null);
   
   // Update student status mutation
   const [updateStudentStatus, { isLoading: isUpdatingStatus }] = useUpdateStudentStatusMutation();
@@ -69,16 +75,23 @@ const PlacementDetails = () => {
   // Handle student status change
   const handleStatusChange = async (studentId, newStatus) => {
     try {
-      await updateStudentStatus({
+      console.log(`Updating student ${studentId} to status ${newStatus}`);
+      
+      const result = await updateStudentStatus({
         placementId,
         statusData: { studentId, status: newStatus }
       }).unwrap();
+      
+      console.log("Update result:", result);
+      
+      // Refetch the registered students data to get updated status
+      await refetchStudents();
       
       // Show success notification
       alert(`Student ${newStatus} successfully!`);
     } catch (error) {
       console.error('Failed to update student status:', error);
-      alert(`Failed to update status: ${error?.data?.message || 'Unknown error'}`);
+      alert(`Failed to update status: ${error?.data?.message || error?.message || 'Unknown error'}`);
     }
   };
   
@@ -91,16 +104,46 @@ const PlacementDetails = () => {
     );
   }
   
-  if (!placement) {
+  if (placementError || !placement) {
     return (
       <div className="bg-red-50 rounded-lg p-6 flex items-center gap-3 max-w-lg mx-auto mt-8">
         <AlertCircle className="h-6 w-6 text-red-500" />
-        <p className="text-red-600 font-medium">Placement not found</p>
+        <div>
+          <p className="text-red-600 font-medium">
+            {placementError ? 'Error loading placement' : 'Placement not found'}
+          </p>
+          {placementError && (
+            <p className="text-red-500 text-sm mt-1">
+              {placementError?.data?.message || placementError?.message || 'Unknown error'}
+            </p>
+          )}
+        </div>
       </div>
     );
   }
   
-  const registeredStudents = registeredStudentsData?.data || [];
+  // Handle different response structures for registered students
+  let registeredStudents = [];
+  if (registeredStudentsResponse) {
+    if (registeredStudentsResponse.success && registeredStudentsResponse.data) {
+      // API response with success wrapper
+      registeredStudents = registeredStudentsResponse.data;
+    } else if (Array.isArray(registeredStudentsResponse)) {
+      // Direct array response
+      registeredStudents = registeredStudentsResponse;
+    }
+  }
+  
+  console.log("Final registered students:", registeredStudents);
+  console.log("Placement updates:", placement.updates); // Debug log for updates
+  
+  // Calculate status counts
+  const statusCounts = {
+    total: registeredStudents.length,
+    shortlisted: registeredStudents.filter(r => r.status === 'shortlisted').length,
+    rejected: registeredStudents.filter(r => r.status === 'rejected').length,
+    pending: registeredStudents.filter(r => r.status === 'registered' || !r.status || r.status === 'pending').length
+  };
   
   return (
     <div className="bg-gray-50 min-h-screen pb-12">
@@ -136,6 +179,18 @@ const PlacementDetails = () => {
       </div>
       
       <div className="container mx-auto px-4">
+        {/* Debug info - remove in production */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+            <p><strong>Debug Info:</strong></p>
+            <p>Placement loaded: {String(!!placement)}</p>
+            <p>Updates count: {placement?.updates?.length || 0}</p>
+            <p>Students API success: {String(registeredStudentsResponse?.success)}</p>
+            <p>Students count: {registeredStudents.length}</p>
+            <p>Students error: {studentsError ? JSON.stringify(studentsError) : 'None'}</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* Placement Details Card */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden col-span-2">
@@ -205,7 +260,7 @@ const PlacementDetails = () => {
                     <Users className="h-5 w-5 text-blue-600" />
                     <span className="text-gray-800">Total Registrations</span>
                   </div>
-                  <span className="font-bold text-blue-600">{registeredStudents.length}</span>
+                  <span className="font-bold text-blue-600">{statusCounts.total}</span>
                 </div>
                 
                 <div className="flex items-center justify-between p-3 bg-green-50 rounded border border-green-100">
@@ -213,9 +268,7 @@ const PlacementDetails = () => {
                     <CheckCircle2 className="h-5 w-5 text-green-600" />
                     <span className="text-gray-800">Shortlisted</span>
                   </div>
-                  <span className="font-bold text-green-600">
-                    {registeredStudents.filter(r => r.status === 'shortlisted').length}
-                  </span>
+                  <span className="font-bold text-green-600">{statusCounts.shortlisted}</span>
                 </div>
                 
                 <div className="flex items-center justify-between p-3 bg-yellow-50 rounded border border-yellow-100">
@@ -223,9 +276,7 @@ const PlacementDetails = () => {
                     <Clock className="h-5 w-5 text-yellow-600" />
                     <span className="text-gray-800">Pending</span>
                   </div>
-                  <span className="font-bold text-yellow-600">
-                    {registeredStudents.filter(r => r.status === 'pending' || !r.status).length}
-                  </span>
+                  <span className="font-bold text-yellow-600">{statusCounts.pending}</span>
                 </div>
                 
                 <div className="flex items-center justify-between p-3 bg-red-50 rounded border border-red-100">
@@ -233,21 +284,19 @@ const PlacementDetails = () => {
                     <XCircle className="h-5 w-5 text-red-600" />
                     <span className="text-gray-800">Rejected</span>
                   </div>
-                  <span className="font-bold text-red-600">
-                    {registeredStudents.filter(r => r.status === 'rejected').length}
-                  </span>
+                  <span className="font-bold text-red-600">{statusCounts.rejected}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         
-        {/* Updates Section */}
+        {/* Updates Section - FIXED */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
           <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
             <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
               <Bell className="h-5 w-5 text-blue-600" />
-              Updates
+              Updates ({placement.updates?.length || 0})
             </h2>
           </div>
           
@@ -260,7 +309,10 @@ const PlacementDetails = () => {
                       <p className="whitespace-pre-line text-gray-800 mb-3">{update.updateText}</p>
                       <div className="flex items-center text-gray-500 text-sm">
                         <UserCircle className="h-4 w-4 mr-1" />
-                        <span>Admin ID: {update.postedBy || 'Unknown'}</span>
+                        <span>
+                          {/* FIXED: Handle postedBy object structure */}
+                          {update.postedBy?.email || update.postedBy?._id || update.postedBy || 'Unknown Admin'}
+                        </span>
                         <span className="mx-2">•</span>
                         <Calendar className="h-4 w-4 mr-1" />
                         <span>{format(new Date(update.datePosted), 'MMM d, yyyy')}</span>
@@ -270,7 +322,10 @@ const PlacementDetails = () => {
                             ? 'bg-blue-100 text-blue-800' 
                             : 'bg-purple-100 text-purple-800'
                         }`}>
-                          {update.roundType === 'common' ? 'Common' : 'Round Specific'}
+                          {/* FIXED: Handle roundType properly */}
+                          {update.roundType === 'common' ? 'Common' : 
+                           update.roundType === 'round-specific' ? 'Round Specific' : 
+                           update.roundType || 'General'}
                         </span>
                       </div>
                     </div>
@@ -291,11 +346,19 @@ const PlacementDetails = () => {
           <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
             <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
               <FileSpreadsheet className="h-5 w-5 text-blue-600" />
-              Registered Students
+              Registered Students ({registeredStudents.length})
             </h2>
           </div>
           
           <div className="p-6">
+            {studentsError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <p className="text-red-600">
+                  Error loading students: {studentsError?.data?.message || studentsError?.message || 'Unknown error'}
+                </p>
+              </div>
+            )}
+            
             {registeredStudents.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -308,6 +371,9 @@ const PlacementDetails = () => {
                         Resume
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Roll Number
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Status
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -317,16 +383,19 @@ const PlacementDetails = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {registeredStudents.map((registration) => (
-                      <tr key={registration._id} className="hover:bg-gray-50">
+                      <tr key={registration.student_id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                             <div>
                               <div className="text-sm font-medium text-gray-900">
-                                {registration.student?.name || `ID: ${registration.student?._id || 'N/A'}`}
+                                {registration.student?.name || ` ${registration.student?.email || registration.student || 'N/A'}`}
                               </div>
-                              <div className="text-sm text-gray-500">
-                                {registration.student?.email || 'No email'}
-                              </div>
+                             
+                              {registration.student?.rollNumber && (
+                                <div className="text-sm text-gray-500">
+                                  Roll: {registration.student.rollNumber}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </td>
@@ -343,6 +412,9 @@ const PlacementDetails = () => {
                             </a>
                           ) : 'No resume'}
                         </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                          {registration.googleFormLink || 'NA'}
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             registration.status === 'shortlisted' 
@@ -351,13 +423,13 @@ const PlacementDetails = () => {
                                 ? 'bg-red-100 text-red-800'
                                 : 'bg-yellow-100 text-yellow-800'
                           }`}>
-                            {registration.status || 'pending'}
+                            {registration.status || 'registered'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex gap-2">
                             <button
-                              onClick={() => handleStatusChange(registration.student?._id, 'shortlisted')}
+                              onClick={() => handleStatusChange(registration.student?._id || registration.student, 'shortlisted')}
                               disabled={registration.status === 'shortlisted' || isUpdatingStatus}
                               className={`inline-flex items-center px-2 py-1 border rounded-md ${
                                 registration.status === 'shortlisted' || isUpdatingStatus
@@ -365,11 +437,15 @@ const PlacementDetails = () => {
                                   : 'border-green-600 text-green-600 hover:bg-green-600 hover:text-white'
                               } transition-colors`}
                             >
-                              <CheckCircle2 className="h-3 w-3 mr-1" />
+                              {isUpdatingStatus ? (
+                                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                              ) : (
+                                <CheckCircle2 className="h-3 w-3 mr-1" />
+                              )}
                               Shortlist
                             </button>
                             <button
-                              onClick={() => handleStatusChange(registration.student?._id, 'rejected')}
+                              onClick={() => handleStatusChange(registration.student?._id || registration.student, 'rejected')}
                               disabled={registration.status === 'rejected' || isUpdatingStatus}
                               className={`inline-flex items-center px-2 py-1 border rounded-md ${
                                 registration.status === 'rejected' || isUpdatingStatus
@@ -377,7 +453,11 @@ const PlacementDetails = () => {
                                   : 'border-red-600 text-red-600 hover:bg-red-600 hover:text-white'
                               } transition-colors`}
                             >
-                              <XCircle className="h-3 w-3 mr-1" />
+                              {isUpdatingStatus ? (
+                                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                              ) : (
+                                <XCircle className="h-3 w-3 mr-1" />
+                              )}
                               Reject
                             </button>
                           </div>
@@ -391,6 +471,7 @@ const PlacementDetails = () => {
               <div className="flex flex-col items-center justify-center py-12 text-gray-500">
                 <Users className="h-16 w-16 text-gray-300 mb-3" />
                 <p className="text-lg">No students have registered for this placement yet.</p>
+                <p className="text-sm mt-1">Registered students will appear here once they apply.</p>
               </div>
             )}
           </div>

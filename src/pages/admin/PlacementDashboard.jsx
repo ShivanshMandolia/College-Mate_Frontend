@@ -7,7 +7,6 @@ import {
 import { 
   selectAllPlacements, 
   setSelectedPlacement,
-  // Add the necessary action to set placements
   setPlacements
 } from '../../features/placements/placementsSlice';
 import { format } from 'date-fns';
@@ -31,39 +30,44 @@ const PlacementDashboard = () => {
   
   // Fetch placements assigned to admin
   const { 
-    data: placementsData, 
+    data: placementsResponse, 
     isLoading: isLoadingPlacements, 
     isError: isPlacementsError,
     error: placementsError 
   } = useGetAllPlacementsForAdminQuery();
-  console.log("placement data",placementsData)
-  console.log("🚀 placementsData:", placementsData);
-console.log("📦 isLoading:", isLoadingPlacements);
-console.log("❌ isError:", isPlacementsError);
-console.log("⚠️ error:", placementsError);
+  
+  console.log("Full API Response:", placementsResponse);
+  console.log("🚀 placementsResponse:", placementsResponse);
+  console.log("📦 isLoading:", isLoadingPlacements);
+  console.log("❌ isError:", isPlacementsError);
+  console.log("⚠️ error:", placementsError);
+  
   // Update Redux store when data is fetched
   useEffect(() => {
-    if (placementsData && placementsData.data) {
-      dispatch(setPlacements(placementsData.data));
+    // The response structure is: { statusCode: 200, data: [...], message: "...", success: true }
+    if (placementsResponse?.success && placementsResponse?.data) {
+      console.log("Setting placements in Redux:", placementsResponse.data);
+      dispatch(setPlacements(placementsResponse.data));
     }
-  }, [placementsData, dispatch]);
+  }, [placementsResponse, dispatch]);
   
   // Get placements from Redux store
   const placements = useSelector(selectAllPlacements);
+  console.log("Placements from Redux:", placements);
 
   // Filter placements based on search query
   const filteredPlacements = placements?.filter(placement => 
     placement.companyName.toLowerCase().includes(searchQuery.toLowerCase()) || 
     placement.jobTitle.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) || [];
+
+  console.log("Filtered placements:", filteredPlacements);
 
   // Handle navigation to placement details
   const handleViewDetails = (placement) => {
     dispatch(setSelectedPlacement(placement));
     navigate(`/admin/placements/${placement._id}`);
   };
-
-console.log("Full placementsData", placementsData);
 
   // Handle navigation to update placement
   const handleAddUpdate = (placement) => {
@@ -87,7 +91,7 @@ console.log("Full placementsData", placementsData);
           <CircleAlert className="h-8 w-8 text-red-500" />
           <h2 className="text-xl font-semibold text-red-700">Error Loading Placements</h2>
         </div>
-        <p className="text-red-600">{placementsError?.data?.message || 'Failed to load placements. Please try again later.'}</p>
+        <p className="text-red-600">{placementsError?.data?.message || placementsError?.message || 'Failed to load placements. Please try again later.'}</p>
       </div>
     );
   }
@@ -104,6 +108,17 @@ console.log("Full placementsData", placementsData);
       </div>
       
       <div className="container mx-auto px-4">
+        {/* Debug info - remove in production */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+            <p><strong>Debug Info:</strong></p>
+            <p>API Response Success: {String(placementsResponse?.success)}</p>
+            <p>Placements Data Length: {placementsResponse?.data?.length || 0}</p>
+            <p>Redux Placements Length: {placements?.length || 0}</p>
+            <p>Filtered Placements Length: {filteredPlacements?.length || 0}</p>
+          </div>
+        )}
+
         {/* Search and filter section */}
         <div className="bg-white rounded-lg shadow-md p-4 mb-8">
           <div className="relative">
@@ -120,7 +135,7 @@ console.log("Full placementsData", placementsData);
       
         <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <FileDigit className="h-6 w-6 text-blue-600" />
-          Your Assigned Placements
+          Your Assigned Placements ({filteredPlacements?.length || 0})
         </h2>
         
         {filteredPlacements && filteredPlacements.length > 0 ? (
@@ -144,12 +159,28 @@ console.log("Full placementsData", placementsData);
                   <div className="flex items-center mb-3 text-sm">
                     <Calendar className="h-4 w-4 text-red-500 mr-2" />
                     <span className="font-medium">Deadline:</span>
-                    <span className="ml-1 text-gray-600">{format(new Date(placement.deadline), 'MMM d, yyyy')}</span>
+                    <span className="ml-1 text-gray-600">
+                      {format(new Date(placement.deadline), 'MMM d, yyyy')}
+                    </span>
                   </div>
                   
                   <p className="text-gray-600 mb-4 line-clamp-2 text-sm">
-                    {placement.jobDescription ? placement.jobDescription.substring(0, 100) + '...' : 'No description available'}
+                    {placement.jobDescription ? 
+                      placement.jobDescription.substring(0, 100) + '...' : 
+                      'No description available'
+                    }
                   </p>
+
+                  {/* Status badge */}
+                  <div className="mb-3">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      placement.status === 'open' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {placement.status}
+                    </span>
+                  </div>
                 </div>
                 
                 <div className="bg-gray-50 px-6 py-3 flex justify-between">
@@ -174,8 +205,18 @@ console.log("Full placementsData", placementsData);
         ) : (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <Clock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <p className="text-xl text-gray-600 mb-2">No placements are currently assigned to you.</p>
-            <p className="text-gray-500">New assignments will appear here when they are assigned to you by a superadmin.</p>
+            <p className="text-xl text-gray-600 mb-2">
+              {searchQuery ? 
+                `No placements found matching "${searchQuery}"` : 
+                "No placements are currently assigned to you."
+              }
+            </p>
+            <p className="text-gray-500">
+              {searchQuery ? 
+                "Try adjusting your search terms." :
+                "New assignments will appear here when they are assigned to you by a superadmin."
+              }
+            </p>
           </div>
         )}
       </div>

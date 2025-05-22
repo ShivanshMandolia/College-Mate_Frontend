@@ -19,7 +19,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
           url: '/auth/register',
           method: 'POST',
           body: formData,
-          formData: true,
+          
         };
       },
     }),
