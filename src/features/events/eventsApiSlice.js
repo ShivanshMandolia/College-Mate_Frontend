@@ -20,7 +20,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: '/create',
+          url: '/events/create',
           method: 'POST',
           body: formData,
           formData: true,
@@ -30,12 +30,12 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
     }),
     
     getAllEvents: builder.query({
-      query: () => '/all',
+      query: () => '/events/all',
       providesTags: ['Events'],
     }),
     
     getEventById: builder.query({
-      query: (eventId) => `/view/${eventId}`,
+      query: (eventId) => `/events/view/${eventId}`,
       providesTags: (result, error, id) => [{ type: 'Events', id }],
     }),
     
@@ -56,7 +56,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
         }
         
         return {
-          url: `/update/${eventId}`,
+          url: `/events/update/${eventId}`,
           method: 'PUT',
           body: formData,
           formData: true,
@@ -67,7 +67,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
     
     deleteEvent: builder.mutation({
       query: (eventId) => ({
-        url: `/delete/${eventId}`,
+        url: `/events/delete/${eventId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Events'],
@@ -75,7 +75,7 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
     
     addOrUpdateReaction: builder.mutation({
       query: ({ eventId, reactionData }) => ({
-        url: `/${eventId}/reactions`,
+        url: `/events/${eventId}/reactions`,
         method: 'POST',
         body: reactionData,
       }),
@@ -84,18 +84,18 @@ export const eventsApiSlice = apiSlice.injectEndpoints({
     
     deleteReaction: builder.mutation({
       query: (eventId) => ({
-        url: `/${eventId}/reactions`,
+        url: `/events/${eventId}/reactions`,
         method: 'DELETE',
       }),
       invalidatesTags: (result, error, eventId) => [{ type: 'Events', id: eventId }],
     }),
     
     getUsersWhoReacted: builder.query({
-      query: (eventId) => `/${eventId}/reactions/users`,
+      query: (eventId) => `/events/${eventId}/reactions/users`,
     }),
     
     getReactionsForEvent: builder.query({
-      query: (eventId) => `/${eventId}/reactions`,
+      query: (eventId) => `/events/${eventId}/reactions`,
     }),
   }),
 });

@@ -17,7 +17,7 @@ import ProtectedRoute from './pages/auth/ProtectedRoute.jsx';
 import HomePage from './components/HomePage.jsx';
 
 // Student Pages
-import StudentDashboard from './pages/student/dashboard';
+import StudentDashboard from './pages/student/dashboard.jsx';
 import LostAndFoundPage from './pages/student/lostandfoundpage';
 import FoundItemDetailPage from './pages/student/FoundItemDetailpage.jsx';
 import LostItemDetailPage from './pages/student/LostItemDetailPage.jsx';
@@ -31,6 +31,7 @@ import CreateComplaint from './pages/student/CreateComplaint.jsx';
 import StudentPlacementsPage from './pages/student/placementpage.jsx';
 import PlacementDetailPage from './pages/student/PlacementDetail.jsx';
 import PlacementRegistrationPage from './pages/student/PlacementRegister.jsx';
+import StudentEventsPage from './pages/student/eventpage.jsx';
 
 
 // Admin Pages
@@ -39,6 +40,9 @@ import AdminComplaintsList from './pages/admin/admincomplainents.jsx';
 import AdminComplaintDetail from './pages/admin/AdminComplaintsView.jsx';
 import PlacementDashboard from './pages/admin/PlacementDashboard.jsx';
 import PlacementUpdate from './pages/admin/PlacementUpdate.jsx';
+import EventsMainPage from './pages/admin/EventsMainPage.jsx';
+import CreateEventPage from './pages/admin/PostEventsPage.jsx';
+import UpdateEventPage from './pages/admin/UpdateEventPage.jsx';
 
 // Super Admin Pages
 import SuperAdminDashboard from './pages/superadmin/dashboard';
@@ -114,6 +118,8 @@ function App() {
                    <Route path="placements" element={<StudentPlacementsPage />} />
                     <Route path="placements/:placementId" element={<PlacementDetailPage />} />
                    <Route path="placements/:placementId/register" element={<PlacementRegistrationPage />} />
+                    <Route path="events" element={<StudentEventsPage />} />
+
 
                 </Routes>
               </ProtectedRoute>
@@ -128,10 +134,13 @@ function App() {
                    <Route path="placements" element={<PlacementList />} />
                     <Route path="complaints" element={<AdminComplaintsList />} />
 
- <Route path="placements/:placementId" element={<PlacementDetails />} />
+                     <Route path="placements/:placementId" element={<PlacementDetails />} />
                     <Route path="placements/:placementId/update" element={<PlacementUpdate />} />
 
                       <Route path="complaints/:complaintId" element={<AdminComplaintDetail />} />
+                         <Route path="events" element={<EventsMainPage />} />
+                          <Route path="events/create" element={<CreateEventPage/>} />
+                     <Route path="events/update/:eventId" element={<UpdateEventPage />} />
 
                 
                 </Routes>

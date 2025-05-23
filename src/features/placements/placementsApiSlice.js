@@ -202,6 +202,6 @@ export const {
   useGetAllPlacementsForStudentQuery,
   
   // Common hooks
-  useGetPlacementDetailsMutation,
+  useGetPlacementDetailsQuery,
   useDeletePlacementMutation,
 } = placementsApiSlice;
