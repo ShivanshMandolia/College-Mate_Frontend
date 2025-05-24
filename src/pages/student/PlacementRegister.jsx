@@ -14,7 +14,8 @@ import {
   Link2,
   CheckCircle,
   XCircle,
-  AlertTriangle
+  AlertTriangle,
+  Star
 } from 'lucide-react';
 
 const PlacementRegistrationPage = () => {
@@ -106,8 +107,23 @@ const PlacementRegistrationPage = () => {
   // Loading state
   if (isLoadingDetails) {
     return (
-      <div className="flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        {/* Animated background particles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-400/20 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-indigo-400/20 rounded-full blur-xl animate-pulse delay-300"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-pink-400/20 rounded-full blur-xl animate-pulse delay-700"></div>
+        </div>
+        
+        <div className="flex justify-center items-center h-screen relative z-10">
+          <div className="text-center">
+            <div className="relative">
+              <div className="w-20 h-20 border-4 border-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 rounded-full animate-spin"></div>
+              <div className="absolute inset-2 bg-slate-900 rounded-full"></div>
+            </div>
+            <p className="text-white/70 mt-6 text-lg">Loading placement details...</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -115,14 +131,29 @@ const PlacementRegistrationPage = () => {
   // Error state for loading details
   if (isDetailsError) {
     return (
-      <div className="p-6 max-w-7xl mx-auto">
-        <Link to="/student/placements" className="flex items-center text-blue-600 mb-6 hover:underline">
-          <ArrowLeft size={16} className="mr-1" />
-          Back to Placements
-        </Link>
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <strong className="font-bold">Error!</strong>
-          <span className="block sm:inline"> {detailsError?.data?.message || 'Failed to load placement details'}</span>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        {/* Background particles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-400/10 rounded-full blur-xl"></div>
+          <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-indigo-400/10 rounded-full blur-xl"></div>
+        </div>
+
+        <div className="p-6 max-w-4xl mx-auto relative z-10 pt-20">
+          <Link 
+            to="/student/placements" 
+            className="inline-flex items-center text-purple-400 mb-8 hover:text-purple-300 transition-all duration-300 group"
+          >
+            <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-lg">Back to Placements</span>
+          </Link>
+          
+          <div className="bg-white/5 backdrop-blur-xl border border-red-400/30 rounded-3xl p-8 text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-red-400 to-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <XCircle size={32} className="text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-4">Error Loading Placement</h2>
+            <p className="text-white/70 text-lg">{detailsError?.data?.message || 'Failed to load placement details'}</p>
+          </div>
         </div>
       </div>
     );
@@ -131,182 +162,240 @@ const PlacementRegistrationPage = () => {
   // Already registered state
   if (isAlreadyRegistered) {
     return (
-      <div className="p-6 max-w-7xl mx-auto">
-        <Link to="/student/placements" className="flex items-center text-blue-600 mb-6 hover:underline">
-          <ArrowLeft size={16} className="mr-1" />
-          Back to Placements
-        </Link>
-        
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-          <AlertTriangle size={48} className="mx-auto text-yellow-500 mb-4" />
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Already Registered</h2>
-          <p className="text-gray-600 mb-4">You have already registered for this placement.</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        {/* Background particles */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-orange-400/10 rounded-full blur-xl animate-pulse"></div>
+        </div>
+
+        <div className="p-6 max-w-4xl mx-auto relative z-10 pt-20">
           <Link 
-            to={`/student/placements/${placementId}`}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            to="/student/placements" 
+            className="inline-flex items-center text-purple-400 mb-8 hover:text-purple-300 transition-all duration-300 group"
           >
-            View Placement Details
+            <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-lg">Back to Placements</span>
           </Link>
+          
+          <div className="bg-white/5 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-12 text-center">
+            <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl flex items-center justify-center mx-auto mb-8">
+              <AlertTriangle size={40} className="text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4">Already Registered</h2>
+            <p className="text-white/70 text-xl mb-8">You have already registered for this placement.</p>
+            <Link 
+              to={`/student/placements/${placementId}`}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105 text-lg font-semibold"
+            >
+              View Placement Details
+            </Link>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <Link to={`/student/placements/${placementId}`} className="flex items-center text-blue-600 mb-6 hover:underline">
-        <ArrowLeft size={16} className="mr-1" />
-        Back to Placement Details
-      </Link>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Animated background particles */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-400/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-48 h-48 bg-indigo-400/20 rounded-full blur-xl animate-pulse delay-300"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-40 h-40 bg-pink-400/20 rounded-full blur-xl animate-pulse delay-700"></div>
+        <div className="absolute top-1/2 right-1/3 w-24 h-24 bg-cyan-400/15 rounded-full blur-xl animate-pulse delay-1000"></div>
+      </div>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-        <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-800">Register for Placement</h1>
-          <h2 className="text-xl font-semibold text-gray-700 mt-1">{placement?.companyName} - {placement?.jobTitle}</h2>
-        </div>
+      <div className="p-6 max-w-7xl mx-auto relative z-10 pt-12">
+        <Link 
+          to={`/student/placements/${placementId}`} 
+          className="inline-flex items-center text-purple-400 mb-8 hover:text-purple-300 transition-all duration-300 group"
+        >
+          <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
+          <span className="text-lg font-medium">Back to Placement Details</span>
+        </Link>
 
-        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Form Section */}
-          <div className="col-span-1 md:col-span-2">
-            {isSuccess ? (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-                <CheckCircle size={48} className="mx-auto text-green-500 mb-4" />
-                <h2 className="text-xl font-bold text-gray-800 mb-2">Registration Successful!</h2>
-                <p className="text-gray-600 mb-4">Your application has been submitted successfully.</p>
-                <p className="text-gray-600">You'll be redirected to the placement details page shortly.</p>
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          {/* Header */}
+          <div className="p-8 border-b border-white/10 bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-indigo-600/20">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-xl flex items-center justify-center mr-4">
+                <Star size={24} className="text-white" />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                {/* Form errors */}
-                {(formError || isRegisterError) && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
-                    <strong className="font-bold">Error: </strong>
-                    <span className="block sm:inline">
-                      {formError || registerError?.data?.message || 'Failed to register for placement'}
-                    </span>
-                  </div>
-                )}
-
-                {/* Resume Upload */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Upload Resume (PDF)</label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 transition-colors">
-                    <input
-                      type="file"
-                      id="resume"
-                      accept=".pdf"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <label htmlFor="resume" className="cursor-pointer flex flex-col items-center">
-                      {resumeFile ? (
-                        <>
-                          <FileText size={36} className="text-green-500 mb-2" />
-                          <p className="text-green-600 font-medium">{resumeFile.name}</p>
-                          <p className="text-sm text-gray-500 mt-1">Click to change file</p>
-                        </>
-                      ) : (
-                        <>
-                          <Upload size={36} className="text-gray-400 mb-2" />
-                          <p className="text-gray-600 font-medium">Click to upload your resume</p>
-                          <p className="text-sm text-gray-500 mt-1">PDF format only</p>
-                        </>
-                      )}
-                    </label>
-                  </div>
-                </div>
-
-               {/* Roll Number Input (still stored as googleFormLink in backend) */}
-<div className="mb-6">
-  <label htmlFor="googleFormLink" className="block text-sm font-medium text-gray-700 mb-2">
-    Roll Number
-  </label>
-  <div className="relative">
-    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-      <Link2 size={18} className="text-gray-400" />
-    </div>
-    <input
-      type="text"
-      id="googleFormLink"
-      value={googleFormLink}
-      onChange={(e) => setGoogleFormLink(e.target.value)}
-      placeholder="202XUCSXXX"
-      className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-      required
-    />
-  </div>
-  <p className="mt-1 text-sm text-gray-500">
-    Enter your college roll number (format: 202XUCSXXX)
-  </p>
-</div>
-
-                {/* Submit Button */}
-                <div className="mt-8">
-                  <button
-                    type="submit"
-                    disabled={isRegistering}
-                    className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                      isRegistering ? 'opacity-70 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    {isRegistering ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
-                        Submitting...
-                      </>
-                    ) : (
-                      'Submit Application'
-                    )}
-                  </button>
-                </div>
-              </form>
-            )}
+              <div>
+                <h1 className="text-3xl font-bold text-white">Register for Placement</h1>
+                <h2 className="text-xl font-semibold text-purple-300 mt-1">
+                  {placement?.companyName} - {placement?.jobTitle}
+                </h2>
+              </div>
+            </div>
           </div>
 
-          {/* Placement Info Sidebar */}
-          <div className="col-span-1">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-800 mb-3">Placement Information</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <Building size={18} className="text-blue-600 mr-2 mt-1" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Company</p>
-                    <p className="text-gray-800">{placement?.companyName}</p>
+          <div className="p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Form Section */}
+            <div className="col-span-1 lg:col-span-2">
+              {isSuccess ? (
+                <div className="bg-white/5 backdrop-blur-xl border border-green-400/30 rounded-3xl p-8 text-center">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle size={40} className="text-white" />
                   </div>
-                </li>
-                <li className="flex items-start">
-                  <Briefcase size={18} className="text-blue-600 mr-2 mt-1" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Position</p>
-                    <p className="text-gray-800">{placement?.jobTitle}</p>
+                  <h2 className="text-2xl font-bold text-white mb-4">Registration Successful!</h2>
+                  <p className="text-white/70 text-lg mb-4">Your application has been submitted successfully.</p>
+                  <p className="text-white/60">You'll be redirected to the placement details page shortly.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  {/* Form errors */}
+                  {(formError || isRegisterError) && (
+                    <div className="bg-red-500/10 backdrop-blur-xl border border-red-400/30 text-red-300 px-6 py-4 rounded-2xl" role="alert">
+                      <div className="flex items-center">
+                        <XCircle size={20} className="mr-3 text-red-400" />
+                        <div>
+                          <strong className="font-semibold">Error: </strong>
+                          <span>
+                            {formError || registerError?.data?.message || 'Failed to register for placement'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Resume Upload */}
+                  <div className="space-y-3">
+                    <label className="block text-lg font-semibold text-white">Upload Resume (PDF)</label>
+                    <div className="border-2 border-dashed border-white/20 hover:border-purple-400/50 rounded-2xl p-8 text-center cursor-pointer bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group">
+                      <input
+                        type="file"
+                        id="resume"
+                        accept=".pdf"
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                      <label htmlFor="resume" className="cursor-pointer flex flex-col items-center">
+                        {resumeFile ? (
+                          <>
+                            <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-400 rounded-2xl flex items-center justify-center mb-4">
+                              <FileText size={32} className="text-white" />
+                            </div>
+                            <p className="text-green-400 font-semibold text-lg">{resumeFile.name}</p>
+                            <p className="text-white/60 mt-2">Click to change file</p>
+                          </>
+                        ) : (
+                          <>
+                            <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                              <Upload size={32} className="text-white/60 group-hover:text-purple-400" />
+                            </div>
+                            <p className="text-white font-semibold text-lg">Click to upload your resume</p>
+                            <p className="text-white/60 mt-2">PDF format only</p>
+                          </>
+                        )}
+                      </label>
+                    </div>
                   </div>
-                </li>
-                <li className="flex items-start">
-                  <Calendar size={18} className="text-blue-600 mr-2 mt-1" />
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Application Deadline</p>
-                    <p className="text-gray-800">{new Date(placement?.deadline).toLocaleDateString()}</p>
+
+                  {/* Roll Number Input */}
+                  <div className="space-y-3">
+                    <label htmlFor="googleFormLink" className="block text-lg font-semibold text-white">
+                      Roll Number
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <Link2 size={20} className="text-purple-400" />
+                      </div>
+                      <input
+                        type="text"
+                        id="googleFormLink"
+                        value={googleFormLink}
+                        onChange={(e) => setGoogleFormLink(e.target.value)}
+                        placeholder="202XUCSXXX"
+                        className="pl-12 w-full py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder-white/50 focus:border-purple-400/50 focus:bg-white/10 transition-all duration-300 text-lg"
+                        required
+                      />
+                    </div>
+                    <p className="text-white/60">
+                      Enter your college roll number (format: 202XUCSXXX)
+                    </p>
                   </div>
-                </li>
-              </ul>
-              
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <h4 className="font-medium text-gray-700 mb-2">Important Notes:</h4>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-start">
-                    <CheckCircle size={14} className="text-green-500 mr-2 mt-1" />
-                    <span>Ensure your resume is up-to-date</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle size={14} className="text-green-500 mr-2 mt-1" />
-                    <span>Complete the Google Form thoroughly</span>
-                  </li>
-                  <li className="flex items-start">
-                    <XCircle size={14} className="text-red-500 mr-2 mt-1" />
-                    <span>Applications cannot be edited after submission</span>
-                  </li>
-                </ul>
+
+                  {/* Submit Button */}
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      disabled={isRegistering}
+                      className={`w-full py-4 px-6 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl font-semibold text-lg transition-all duration-300 ${
+                        isRegistering 
+                          ? 'opacity-70 cursor-not-allowed' 
+                          : 'hover:shadow-2xl hover:shadow-purple-500/25 hover:scale-[1.02] hover:-translate-y-1'
+                      }`}
+                    >
+                      {isRegistering ? (
+                        <div className="flex items-center justify-center">
+                          <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></div>
+                          Submitting Application...
+                        </div>
+                      ) : (
+                        'Submit Application'
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Placement Info Sidebar */}
+            <div className="col-span-1">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sticky top-6">
+                <h3 className="text-xl font-bold text-white mb-6">Placement Information</h3>
+                
+                <div className="space-y-6">
+                  <div className="flex items-start">
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                      <Building size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-white/60 font-medium mb-1">Company</p>
+                      <p className="text-white text-lg font-semibold">{placement?.companyName}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                      <Briefcase size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-white/60 font-medium mb-1">Position</p>
+                      <p className="text-white text-lg font-semibold">{placement?.jobTitle}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-rose-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                      <Calendar size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-white/60 font-medium mb-1">Application Deadline</p>
+                      <p className="text-white text-lg font-semibold">{new Date(placement?.deadline).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-8 pt-6 border-t border-white/10">
+                  <h4 className="font-semibold text-white mb-4 text-lg">Important Notes:</h4>
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <CheckCircle size={16} className="text-green-400 mr-3 mt-1 flex-shrink-0" />
+                      <span className="text-white/70">Ensure your resume is up-to-date</span>
+                    </div>
+                    <div className="flex items-start">
+                      <CheckCircle size={16} className="text-green-400 mr-3 mt-1 flex-shrink-0" />
+                      <span className="text-white/70">Complete the Google Form thoroughly</span>
+                    </div>
+                    <div className="flex items-start">
+                      <XCircle size={16} className="text-red-400 mr-3 mt-1 flex-shrink-0" />
+                      <span className="text-white/70">Applications cannot be edited after submission</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

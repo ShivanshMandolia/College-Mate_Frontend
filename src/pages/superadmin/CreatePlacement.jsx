@@ -1,4 +1,3 @@
-// src/pages/superadmin/CreatePlacement.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -260,8 +259,28 @@ const CreatePlacement = () => {
   // Render admin assignment step
   const renderAdminAssignment = () => {
     return (
-      <Card elevation={3} sx={{ p: 3 }}>
-        <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        borderRadius: '24px',
+        padding: '32px',
+        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        boxShadow: '0 25px 50px -12px rgba(147, 51, 234, 0.10)'
+      }}>
+        <Typography 
+          variant="h6" 
+          component="h2" 
+          sx={{ 
+            mb: 3, 
+           
+            fontWeight: 600,
+            background: 'linear-gradient(90deg, #c084fc, #f472b6, #818cf8)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent'
+          }}
+        >
           Admin Assignment
         </Typography>
 
@@ -270,29 +289,102 @@ const CreatePlacement = () => {
             <Switch
               checked={assignAdmin}
               onChange={toggleAssignAdmin}
-              color="primary"
+              sx={{
+                '& .MuiSwitch-switchBase.Mui-checked': {
+                  color: '#a855f7',
+                  '&:hover': {
+                    backgroundColor: 'rgba(168, 85, 247, 0.08)',
+                  },
+                },
+                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                  background: 'linear-gradient(90deg, #9333ea, #db2777)',
+                },
+                '& .MuiSwitch-track': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.20)',
+                },
+              }}
             />
           }
-          label="Assign an admin to manage this placement"
+          label={
+            <Typography sx={{ color: '#ffffff', fontWeight: 500 }}>
+              Assign an admin to manage this placement
+            </Typography>
+          }
           sx={{ mb: 2 }}
         />
 
-        <Divider sx={{ mb: 3 }} />
+        <Divider sx={{ mb: 3, borderColor: 'rgba(255, 255, 255, 0.10)' }} />
 
         {assignAdmin ? (
           isLoadingAdmins ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 3 }}>
-              <CircularProgress size={30} />
+              <CircularProgress 
+                size={30} 
+                sx={{ color: '#a855f7' }}
+              />
             </Box>
           ) : adminList && adminList.length > 0 ? (
-            <FormControl fullWidth error={!!formErrors.assignedAdmin} sx={{ mb: 3 }}>
+            <FormControl 
+              fullWidth 
+              error={!!formErrors.assignedAdmin} 
+              sx={{ 
+                mb: 3,
+                '& .MuiOutlinedInput-root': {
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(8px)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255, 255, 255, 0.20)',
+                  color: '#ffffff',
+                  '&:hover': {
+                    border: '1px solid rgba(168, 85, 247, 0.50)',
+                  },
+                  '&.Mui-focused': {
+                    border: '1px solid #a855f7',
+                    boxShadow: '0 0 0 2px rgba(168, 85, 247, 0.20)',
+                  }
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#cbd5e1',
+                  '&.Mui-focused': {
+                    color: '#c084fc',
+                  }
+                }
+              }}
+            >
               <InputLabel id="admin-select-label">Assign Admin</InputLabel>
               <Select
                 labelId="admin-select-label"
                 value={placementData.assignedAdmin}
                 label="Assign Admin"
                 onChange={handleAdminChange}
-                startAdornment={<Users size={18} style={{ marginRight: 8, color: '#6B7280' }} />}
+                startAdornment={<Users size={18} style={{ marginRight: 8, color: '#c084fc' }} />}
+                sx={{
+                  '& .MuiSelect-icon': {
+                    color: '#c084fc',
+                  }
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      background: 'rgba(15, 23, 42, 0.95)',
+                      backdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255, 255, 255, 0.10)',
+                      borderRadius: '16px',
+                      '& .MuiMenuItem-root': {
+                        color: '#ffffff',
+                        '&:hover': {
+                          background: 'rgba(168, 85, 247, 0.20)',
+                        },
+                        '&.Mui-selected': {
+                          background: 'linear-gradient(90deg, rgba(147, 51, 234, 0.20), rgba(219, 39, 119, 0.20))',
+                          '&:hover': {
+                            background: 'linear-gradient(90deg, rgba(147, 51, 234, 0.30), rgba(219, 39, 119, 0.30))',
+                          }
+                        }
+                      }
+                    }
+                  }
+                }}
               >
                 {adminList.map(admin => (
                   <MenuItem key={admin._id} value={admin._id}>
@@ -301,45 +393,151 @@ const CreatePlacement = () => {
                 ))}
               </Select>
               {formErrors.assignedAdmin && (
-                <FormHelperText>{formErrors.assignedAdmin}</FormHelperText>
+                <FormHelperText sx={{ color: '#f87171' }}>
+                  {formErrors.assignedAdmin}
+                </FormHelperText>
               )}
             </FormControl>
           ) : (
-            <Alert severity="warning" sx={{ mb: 3 }}>
+            <Alert 
+              severity="warning" 
+              sx={{ 
+                mb: 3,
+                background: 'rgba(251, 146, 60, 0.10)',
+                border: '1px solid rgba(251, 146, 60, 0.30)',
+                borderRadius: '16px',
+                color: '#ffffff',
+                '& .MuiAlert-icon': {
+                  color: '#fb923c',
+                }
+              }}
+            >
               {adminError
                 ? `Error loading admins: ${adminError.data?.message || 'Unknown error'}`
                 : 'No admins available to assign.'}
             </Alert>
           )
         ) : (
-          <Box sx={{ display: 'flex', alignItems: 'center', my: 2, mb: 3 }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            my: 2, 
+            mb: 3,
+            padding: '16px',
+            background: 'rgba(59, 130, 246, 0.10)',
+            border: '1px solid rgba(59, 130, 246, 0.30)',
+            borderRadius: '16px'
+          }}>
             <Info size={20} style={{ color: '#3B82F6', marginRight: 8 }} />
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" sx={{ color: '#cbd5e1' }}>
               No admin will be assigned to this placement. You can always assign an admin later.
             </Typography>
           </Box>
         )}
 
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="body2" color="textSecondary">
+        <Box sx={{ 
+          mt: 2, 
+          padding: '16px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          borderRadius: '16px',
+          border: '1px solid rgba(255, 255, 255, 0.10)'
+        }}>
+          <Typography variant="body2" sx={{ color: '#cbd5e1' }}>
             Assigning an admin will give them permission to manage this placement, update student statuses, and post updates.
           </Typography>
         </Box>
-      </Card>
+      </div>
     );
   };
+
+  // Custom styled TextField component
+  const StyledTextField = ({ startIcon, multiline, minRows, ...props }) => (
+    <TextField
+      {...props}
+      InputProps={{
+        startAdornment: startIcon ? React.cloneElement(startIcon, { 
+          size: 18, 
+          style: { 
+            marginRight: 8, 
+            color: '#c084fc',
+            ...(multiline && { position: 'absolute', top: 12 })
+          } 
+        }) : undefined,
+        sx: {
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(8px)',
+          borderRadius: '16px',
+          border: '1px solid rgba(255, 255, 255, 0.20)',
+          color: '#ffffff',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          ...(multiline && { paddingLeft: '36px' }),
+          '&:hover': {
+            border: '1px solid rgba(168, 85, 247, 0.50)',
+            transform: 'translateY(-2px)',
+          },
+          '&.Mui-focused': {
+            border: '1px solid #a855f7',
+            boxShadow: '0 0 0 2px rgba(168, 85, 247, 0.20)',
+            transform: 'translateY(-2px)',
+          },
+          '& .MuiInputBase-input': {
+            color: '#ffffff',
+            '&::placeholder': {
+              color: '#cbd5e1',
+              opacity: 0.7,
+            }
+          }
+        }
+      }}
+      InputLabelProps={{
+        sx: {
+          color: '#cbd5e1',
+          '&.Mui-focused': {
+            color: '#c084fc',
+          }
+        }
+      }}
+      FormHelperTextProps={{
+        sx: {
+          color: props.error ? '#f87171' : '#cbd5e1',
+          marginLeft: '4px'
+        }
+      }}
+      multiline={multiline}
+      minRows={minRows}
+    />
+  );
 
   // Render placement details step
   const renderPlacementDetails = () => {
     return (
-      <Paper elevation={3} sx={{ p: 3 }}>
-        <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        borderRadius: '24px',
+        padding: '32px',
+        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        boxShadow: '0 25px 50px -12px rgba(147, 51, 234, 0.10)'
+      }}>
+        <Typography 
+          variant="h6" 
+          component="h2" 
+          sx={{ 
+            mb: 3,
+            background: 'linear-gradient(90deg, #c084fc, #f472b6, #818cf8)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+            fontWeight: 600
+          }}
+        >
           Placement Details
         </Typography>
         
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <TextField
+            <StyledTextField
               fullWidth
               label="Company Name"
               name="companyName"
@@ -347,15 +545,13 @@ const CreatePlacement = () => {
               onChange={handleInputChange}
               error={!!formErrors.companyName}
               helperText={formErrors.companyName || ''}
-              InputProps={{
-                startAdornment: <Building size={18} style={{ marginRight: 8, color: '#6B7280' }} />,
-              }}
+              startIcon={<Building />}
               required
             />
           </Grid>
           
           <Grid item xs={12} md={6}>
-            <TextField
+            <StyledTextField
               fullWidth
               label="Job Title"
               name="jobTitle"
@@ -363,15 +559,13 @@ const CreatePlacement = () => {
               onChange={handleInputChange}
               error={!!formErrors.jobTitle}
               helperText={formErrors.jobTitle || ''}
-              InputProps={{
-                startAdornment: <Briefcase size={18} style={{ marginRight: 8, color: '#6B7280' }} />,
-              }}
+              startIcon={<Briefcase />}
               required
             />
           </Grid>
           
           <Grid item xs={12}>
-            <TextField
+            <StyledTextField
               fullWidth
               label="Job Description"
               name="jobDescription"
@@ -381,16 +575,13 @@ const CreatePlacement = () => {
               helperText={formErrors.jobDescription || ''}
               multiline
               minRows={4}
-              InputProps={{
-                startAdornment: <FileText size={18} style={{ marginRight: 8, color: '#6B7280', position: 'absolute', top: 12 }} />,
-                sx: { paddingLeft: '28px' }
-              }}
+              startIcon={<FileText />}
               required
             />
           </Grid>
           
           <Grid item xs={12}>
-            <TextField
+            <StyledTextField
               fullWidth
               label="Eligibility Criteria"
               name="eligibilityCriteria"
@@ -414,7 +605,46 @@ const CreatePlacement = () => {
                     error: !!formErrors.deadline,
                     helperText: formErrors.deadline || '',
                     InputProps: {
-                      startAdornment: <Calendar size={18} style={{ marginRight: 8, color: '#6B7280' }} />
+                      startAdornment: <Calendar size={18} style={{ marginRight: 8, color: '#c084fc' }} />,
+                      sx: {
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        backdropFilter: 'blur(8px)',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255, 255, 255, 0.20)',
+                        color: '#ffffff',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        '&:hover': {
+                          border: '1px solid rgba(168, 85, 247, 0.50)',
+                          transform: 'translateY(-2px)',
+                        },
+                        '&.Mui-focused': {
+                          border: '1px solid #a855f7',
+                          boxShadow: '0 0 0 2px rgba(168, 85, 247, 0.20)',
+                          transform: 'translateY(-2px)',
+                        },
+                        '& .MuiInputBase-input': {
+                          color: '#ffffff',
+                        }
+                      }
+                    },
+                    InputLabelProps: {
+                      sx: {
+                        color: '#cbd5e1',
+                        '&.Mui-focused': {
+                          color: '#c084fc',
+                        }
+                      }
+                    }
+                  },
+                  popper: {
+                    sx: {
+                      '& .MuiPaper-root': {
+                        background: 'rgba(15, 23, 42, 0.95)',
+                        backdropFilter: 'blur(16px)',
+                        border: '1px solid rgba(255, 255, 255, 0.10)',
+                        borderRadius: '16px',
+                        color: '#ffffff',
+                      }
                     }
                   }
                 }}
@@ -423,80 +653,142 @@ const CreatePlacement = () => {
           </Grid>
           
           <Grid item xs={12} md={6}>
-            <TextField
+            <StyledTextField
               fullWidth
               label="Application Link (Optional)"
               name="applicationLink"
               value={placementData.applicationLink}
               onChange={handleInputChange}
               placeholder="https://example.com/apply"
-              InputProps={{
-                startAdornment: <LinkIcon size={18} style={{ marginRight: 8, color: '#6B7280' }} />,
-              }}
+              startIcon={<LinkIcon />}
             />
           </Grid>
         </Grid>
-      </Paper>
+      </div>
     );
   };
 
   // Render review step
   const renderReview = () => {
     return (
-      <Paper elevation={3} sx={{ p: 3 }}>
-        <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.05)',
+        backdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        borderRadius: '24px',
+        padding: '32px',
+        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        boxShadow: '0 25px 50px -12px rgba(147, 51, 234, 0.10)'
+      }}>
+        <Typography 
+          variant="h6" 
+          component="h2" 
+          sx={{ 
+            mb: 3,
+            background: 'linear-gradient(90deg, #c084fc, #f472b6, #818cf8)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+            fontWeight: 600
+          }}
+        >
           Review Placement Information
         </Typography>
         
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Typography variant="subtitle2">Company Name</Typography>
-            <Typography variant="body1" sx={{ mb: 2 }}>{placementData.companyName || 'Not provided'}</Typography>
-            
-            <Typography variant="subtitle2">Job Title</Typography>
-            <Typography variant="body1" sx={{ mb: 2 }}>{placementData.jobTitle || 'Not provided'}</Typography>
-            
-            {placementData.deadline && (
-              <>
-                <Typography variant="subtitle2">Application Deadline</Typography>
-                <Typography variant="body1" sx={{ mb: 2 }}>
-                  {new Date(placementData.deadline).toLocaleDateString()}
-                </Typography>
-              </>
-            )}
-            
-            {placementData.applicationLink && (
-              <>
-                <Typography variant="subtitle2">Application Link</Typography>
-                <Typography variant="body1" sx={{ mb: 2 }}>{placementData.applicationLink}</Typography>
-              </>
-            )}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.10)',
+              marginBottom: '16px'
+            }}>
+              <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                Company Name
+              </Typography>
+              <Typography variant="body1" sx={{ color: '#ffffff', mb: 2 }}>
+                {placementData.companyName || 'Not provided'}
+              </Typography>
+              
+              <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                Job Title
+              </Typography>
+              <Typography variant="body1" sx={{ color: '#ffffff', mb: 2 }}>
+                {placementData.jobTitle || 'Not provided'}
+              </Typography>
+              
+              {placementData.deadline && (
+                <>
+                  <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                    Application Deadline
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#ffffff', mb: 2 }}>
+                    {new Date(placementData.deadline).toLocaleDateString()}
+                  </Typography>
+                </>
+              )}
+              
+              {placementData.applicationLink && (
+                <>
+                  <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                    Application Link
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#60a5fa', mb: 2, wordBreak: 'break-all' }}>
+                    {placementData.applicationLink}
+                  </Typography>
+                </>
+              )}
+            </div>
           </Grid>
           
           <Grid item xs={12} md={6}>
-            <Typography variant="subtitle2">Admin Assignment</Typography>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              {assignAdmin ? (
-                placementData.assignedAdmin ? selectedAdminEmail : 'No admin selected'
-              ) : 'No admin assigned'}
-            </Typography>
-            
-            {placementData.eligibilityCriteria && (
-              <>
-                <Typography variant="subtitle2">Eligibility Criteria</Typography>
-                <Typography variant="body1" sx={{ mb: 2 }}>{placementData.eligibilityCriteria}</Typography>
-              </>
-            )}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.10)',
+              marginBottom: '16px'
+            }}>
+              <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                Admin Assignment
+              </Typography>
+              <Typography variant="body1" sx={{ color: '#ffffff', mb: 2 }}>
+                {assignAdmin ? (
+                  placementData.assignedAdmin ? selectedAdminEmail : 'No admin selected'
+                ) : 'No admin assigned'}
+              </Typography>
+              
+              {placementData.eligibilityCriteria && (
+                <>
+                  <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                    Eligibility Criteria
+                  </Typography>
+                  <Typography variant="body1" sx={{ color: '#ffffff', mb: 2 }}>
+                    {placementData.eligibilityCriteria}
+                  </Typography>
+                </>
+              )}
+            </div>
           </Grid>
           
           <Grid item xs={12}>
-            <Typography variant="subtitle2">Job Description</Typography>
-            <Typography variant="body1" sx={{ mb: 2, whiteSpace: 'pre-wrap' }}>
-              {placementData.jobDescription || 'Not provided'}
-            </Typography>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.10)'
+            }}>
+              <Typography variant="subtitle2" sx={{ color: '#c084fc', fontWeight: 600, mb: 1 }}>
+                Job Description
+              </Typography>
+              <Typography variant="body1" sx={{ color: '#ffffff', whiteSpace: 'pre-wrap' }}>
+                {placementData.jobDescription || 'Not provided'}
+              </Typography>
+            </div>
           </Grid>
         </Grid>
-      </Paper>
+      </div>
     );
   };
   
@@ -515,88 +807,338 @@ const CreatePlacement = () => {
   };
   
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
-        <IconButton 
-          onClick={handleCancel} 
-          sx={{ mr: 2 }}
-          aria-label="Go back to placement list"
-        >
-          <ArrowLeft />
-        </IconButton>
-        <Typography variant="h4" component="h1">
-          Create New Placement
-        </Typography>
-      </Box>
+    <div 
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #0f172a, #581c87, #0f172a)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Floating background elements */}
+      <div style={{
+        position: 'absolute',
+        top: '10%',
+        left: '10%',
+        width: '200px',
+        height: '200px',
+        background: 'radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, transparent 70%)',
+        borderRadius: '50%',
+        animation: 'float 6s ease-in-out infinite',
+      }} />
+      <div style={{
+        position: 'absolute',
+        top: '60%',
+        right: '15%',
+        width: '150px',
+        height: '150px',
+        background: 'radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%)',
+        borderRadius: '50%',
+        animation: 'float 8s ease-in-out infinite reverse',
+      }} />
       
-      {successMessage && (
-        <Alert severity="success" sx={{ mb: 3 }}>
-          {successMessage}
-        </Alert>
-      )}
-      
-      {errorMessage && (
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {errorMessage}
-        </Alert>
-      )}
-      
-      <Box sx={{ mb: 4 }}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </Box>
-      
-      {renderStep()}
-      
-      <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
-        <Button
-          variant="outlined"
-          onClick={activeStep === 0 ? handleCancel : handleBackStep}
-        >
-          {activeStep === 0 ? 'Cancel' : 'Back'}
-        </Button>
-        
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleNextStep}
-          startIcon={activeStep === steps.length - 1 ? <CheckCircle size={20} /> : null}
-        >
-          {activeStep === steps.length - 1 ? 'Create Placement' : 'Next'}
-        </Button>
-      </Box>
-      
-      {/* Confirmation Dialog */}
-      <Dialog
-        open={confirmDialogOpen}
-        onClose={() => setConfirmDialogOpen(false)}
-      >
-        <DialogTitle>Confirm Placement Creation</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to create this placement{assignAdmin && placementData.assignedAdmin ? ` and assign it to ${selectedAdminEmail}` : ''}?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
-          <Button 
-            onClick={handleSubmit} 
-            color="primary" 
-            variant="contained"
-            disabled={isCreating || isAssigning}
-            startIcon={isCreating || isAssigning ? <CircularProgress size={20} /> : <Save size={20} />}
+      <div style={{ 
+        padding: '24px',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 1
+      }}>
+        <Box sx={{ 
+          mb: 4, 
+          display: 'flex', 
+          alignItems: 'center',
+          padding: '24px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 255, 255, 0.10)'
+        }}>
+          <IconButton 
+            onClick={handleCancel} 
+            sx={{ 
+              mr: 2,
+              background: 'rgba(255, 255, 255, 0.10)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.20)',
+              color: '#c084fc',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                background: 'rgba(168, 85, 247, 0.20)',
+                transform: 'scale(1.05) translateY(-2px)',
+                boxShadow: '0 10px 25px -5px rgba(168, 85, 247, 0.25)',
+              }
+            }}
+            aria-label="Go back to placement list"
           >
-            {isCreating || isAssigning ? 'Creating...' : 'Create'}
+            <ArrowLeft />
+          </IconButton>
+          <Typography 
+            variant="h4" 
+            component="h1"
+            sx={{
+              background: 'linear-gradient(90deg, #c084fc, #f472b6, #818cf8)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent',
+              fontWeight: 700,
+              fontSize: { xs: '28px', md: '36px' }
+            }}
+          >
+            Create New Placement
+          </Typography>
+        </Box>
+        
+        {successMessage && (
+          <Alert 
+            severity="success" 
+            sx={{ 
+              mb: 3,
+              background: 'rgba(34, 197, 94, 0.10)',
+              border: '1px solid rgba(34, 197, 94, 0.30)',
+              borderRadius: '16px',
+              color: '#ffffff',
+              backdropFilter: 'blur(8px)',
+              '& .MuiAlert-icon': {
+                color: '#22c55e',
+              }
+            }}
+          >
+            {successMessage}
+          </Alert>
+        )}
+        
+        {errorMessage && (
+          <Alert 
+            severity="error" 
+            sx={{ 
+              mb: 3,
+              background: 'rgba(239, 68, 68, 0.10)',
+              border: '1px solid rgba(239, 68, 68, 0.30)',
+              borderRadius: '16px',
+              color: '#ffffff',
+              backdropFilter: 'blur(8px)',
+              '& .MuiAlert-icon': {
+                color: '#ef4444',
+              }
+            }}
+          >
+            {errorMessage}
+          </Alert>
+        )}
+        
+        <Box sx={{ 
+          mb: 4,
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          padding: '24px',
+          border: '1px solid rgba(255, 255, 255, 0.10)'
+        }}>
+          <Stepper 
+            activeStep={activeStep} 
+            alternativeLabel
+            sx={{
+              '& .MuiStepLabel-label': {
+                color: '#cbd5e1',
+                fontWeight: 500,
+                '&.Mui-active': {
+                  color: '#c084fc',
+                  fontWeight: 600,
+                },
+                '&.Mui-completed': {
+                  color: '#a855f7',
+                  fontWeight: 600,
+                }
+              },
+              '& .MuiStepIcon-root': {
+                color: 'rgba(255, 255, 255, 0.20)',
+                '&.Mui-active': {
+                  color: '#a855f7',
+                },
+                '&.Mui-completed': {
+                  color: '#22c55e',
+                }
+              },
+              '& .MuiStepConnector-line': {
+                borderColor: 'rgba(255, 255, 255, 0.20)',
+              },
+              '& .Mui-active .MuiStepConnector-line': {
+                borderColor: '#a855f7',
+              },
+              '& .Mui-completed .MuiStepConnector-line': {
+                borderColor: '#22c55e',
+              }
+            }}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
+        
+        <div style={{ marginBottom: '32px' }}>
+          {renderStep()}
+        </div>
+        
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between',
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          padding: '24px',
+          border: '1px solid rgba(255, 255, 255, 0.10)'
+        }}>
+          <Button
+            variant="outlined"
+            onClick={activeStep === 0 ? handleCancel : handleBackStep}
+            sx={{
+              background: 'rgba(255, 255, 255, 0.10)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.20)',
+              borderRadius: '16px',
+              padding: '12px 24px',
+              color: '#ffffff',
+              fontWeight: 500,
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                background: 'rgba(255, 255, 255, 0.20)',
+                border: '1px solid rgba(255, 255, 255, 0.30)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.25)',
+              }
+            }}
+          >
+            {activeStep === 0 ? 'Cancel' : 'Back'}
           </Button>
-        </DialogActions>
-      </Dialog>
+          
+          <Button
+            variant="contained"
+            onClick={handleNextStep}
+            startIcon={activeStep === steps.length - 1 ? <CheckCircle size={20} /> : null}
+            sx={{
+              background: 'linear-gradient(90deg, #9333ea, #db2777, #4f46e5)',
+              borderRadius: '16px',
+              padding: '12px 32px',
+              fontWeight: 600,
+              boxShadow: '0 20px 25px -5px rgba(147, 51, 234, 0.25)',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                transform: 'scale(1.05) translateY(-4px)',
+                boxShadow: '0 25px 50px -12px rgba(147, 51, 234, 0.40)',
+                background: 'linear-gradient(90deg, #a855f7, #f472b6, #6366f1)',
+              }
+            }}
+          >
+            {activeStep === steps.length - 1 ? 'Create Placement' : 'Next'}
+          </Button>
+        </Box>
+        
+        {/* Confirmation Dialog */}
+        <Dialog
+          open={confirmDialogOpen}
+          onClose={() => setConfirmDialogOpen(false)}
+          PaperProps={{
+            sx: {
+              background: 'rgba(15, 23, 42, 0.95)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.10)',
+              borderRadius: '24px',
+              color: '#ffffff',
+              minWidth: '400px'
+            }
+          }}
+        >
+          <DialogTitle sx={{ 
+           
+            fontWeight: 600,
+            background: 'linear-gradient(90deg, #c084fc, #f472b6)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent'
+          }}>
+            Confirm Placement Creation
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText sx={{ color: '#cbd5e1' }}>
+              Are you sure you want to create this placement{assignAdmin && placementData.assignedAdmin ? ` and assign it to ${selectedAdminEmail}` : ''}?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ padding: '16px 24px' }}>
+            <Button 
+              onClick={() => setConfirmDialogOpen(false)}
+              sx={{
+                background: 'rgba(255, 255, 255, 0.10)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.20)',
+                borderRadius: '12px',
+                color: '#ffffff',
+                '&:hover': {
+                  background: 'rgba(255, 255, 255, 0.20)',
+                }
+              }}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleSubmit} 
+              variant="contained"
+              disabled={isCreating || isAssigning}
+              startIcon={isCreating || isAssigning ? <CircularProgress size={20} sx={{ color: '#ffffff' }} /> : <Save size={20} />}
+              sx={{
+                background: 'linear-gradient(90deg, #9333ea, #db2777)',
+                borderRadius: '12px',
+                fontWeight: 600,
+                '&:hover': {
+                  background: 'linear-gradient(90deg, #a855f7, #f472b6)',
+                  transform: 'scale(1.02)',
+                },
+                '&:disabled': {
+                  background: 'rgba(147, 51, 234, 0.50)',
+                  color: '#ffffff',
+                }
+              }}
+            >
+              {isCreating || isAssigning ? 'Creating...' : 'Create'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #9333ea, #db2777);
+          border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(180deg, #a855f7, #f472b6);
+        }
+      `}</style>
     </div>
   );
 };
 
-export default CreatePlacement;
+export default CreatePlacement; 

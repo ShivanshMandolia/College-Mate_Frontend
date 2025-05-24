@@ -29,11 +29,11 @@ const LoginPage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       if (isSuperAdmin) {
-        navigate('/admin/dashboard');
+        navigate('/superadmin/dashboard');
       } else if (userRole === 'student') {
         navigate('/student/home');
       } else {
-        navigate('/dashboard');
+        navigate('/admin/dashboard');
       }
     }
   }, [isAuthenticated, userRole, isSuperAdmin, navigate]);

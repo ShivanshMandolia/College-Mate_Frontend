@@ -91,40 +91,54 @@ const CreateEventPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-600/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
-        <div className="flex items-center mb-8">
+        <div className="flex items-center mb-8 animate-fade-in-up">
           <button
             onClick={() => navigate('/events')}
-            className="mr-4 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-200"
+            className="mr-6 p-3 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           >
-            <ArrowLeft size={24} className="text-gray-600" />
+            <ArrowLeft size={24} className="text-white" />
           </button>
           <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">Create New Event</h1>
-            <p className="text-lg text-gray-600">Fill in the details to create your event</p>
+            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent mb-4">
+              Create New Event
+            </h1>
+            <p className="text-xl text-slate-300 font-medium">Fill in the details to create your amazing event</p>
           </div>
         </div>
 
         {/* Notification */}
         {notification.show && (
-          <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
-            notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-          } text-white flex items-center space-x-2`}>
-            <span>{notification.message}</span>
-            <button onClick={() => setNotification({ show: false, message: '', type: 'success' })}>
-              <X size={16} />
+          <div className={`fixed top-6 right-6 z-50 p-6 rounded-2xl backdrop-blur-md shadow-2xl border transition-all duration-500 transform ${
+            notification.type === 'success' 
+              ? 'bg-green-500/20 border-green-500/50 text-green-100' 
+              : 'bg-red-500/20 border-red-500/50 text-red-100'
+          } flex items-center space-x-3 animate-slide-in`}>
+            <span className="font-medium">{notification.message}</span>
+            <button 
+              onClick={() => setNotification({ show: false, message: '', type: 'success' })}
+              className="p-1 hover:bg-white/10 rounded-full transition-colors duration-200"
+            >
+              <X size={18} />
             </button>
           </div>
         )}
 
         {/* Form */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-8 md:p-12 hover:bg-white/10 hover:border-purple-500/50 transition-all duration-500 animate-fade-in-up delay-200">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Title */}
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="space-y-3">
+              <label htmlFor="title" className="block text-lg font-semibold text-white mb-3">
                 Event Title *
               </label>
               <input
@@ -133,15 +147,15 @@ const CreateEventPage = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter event title"
+                className="w-full px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500/50 text-white placeholder-slate-400 transition-all duration-300 hover:bg-white/10 focus:bg-white/10"
+                placeholder="Enter your amazing event title"
                 required
               />
             </div>
 
             {/* Date */}
-            <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="space-y-3">
+              <label htmlFor="date" className="block text-lg font-semibold text-white mb-3">
                 Event Date *
               </label>
               <div className="relative">
@@ -152,16 +166,16 @@ const CreateEventPage = () => {
                   value={formData.date}
                   onChange={handleInputChange}
                   min={getTodayDate()}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500/50 text-white transition-all duration-300 hover:bg-white/10 focus:bg-white/10"
                   required
                 />
-                <Calendar size={20} className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" />
+                <Calendar size={24} className="absolute right-6 top-4 text-purple-400 pointer-events-none" />
               </div>
             </div>
 
             {/* Description */}
-            <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="space-y-3">
+              <label htmlFor="description" className="block text-lg font-semibold text-white mb-3">
                 Event Description *
               </label>
               <textarea
@@ -169,21 +183,21 @@ const CreateEventPage = () => {
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
-                rows={5}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                placeholder="Describe your event in detail..."
+                rows={6}
+                className="w-full px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500/50 text-white placeholder-slate-400 resize-none transition-all duration-300 hover:bg-white/10 focus:bg-white/10"
+                placeholder="Describe your event in detail... What makes it special?"
                 required
               />
             </div>
 
             {/* Image Upload */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="space-y-3">
+              <label className="block text-lg font-semibold text-white mb-3">
                 Event Image (Optional)
               </label>
               
               {!imagePreview ? (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors duration-200">
+                <div className="border-2 border-dashed border-white/20 rounded-2xl p-12 text-center hover:border-purple-500/50 hover:bg-white/5 transition-all duration-300 cursor-pointer group">
                   <input
                     type="file"
                     id="image-upload"
@@ -192,50 +206,53 @@ const CreateEventPage = () => {
                     className="hidden"
                   />
                   <label htmlFor="image-upload" className="cursor-pointer">
-                    <ImageIcon size={48} className="mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 mb-2">Click to upload an image</p>
-                    <p className="text-sm text-gray-400">PNG, JPG, GIF up to 5MB</p>
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <ImageIcon size={40} className="text-white" />
+                    </div>
+                    <p className="text-white text-xl font-medium mb-2">Click to upload an image</p>
+                    <p className="text-slate-400">PNG, JPG, GIF up to 5MB</p>
                   </label>
                 </div>
               ) : (
-                <div className="relative">
+                <div className="relative group">
                   <img
                     src={imagePreview}
                     alt="Event preview"
-                    className="w-full h-64 object-cover rounded-lg"
+                    className="w-full h-80 object-cover rounded-2xl border border-white/20"
                   />
+                  <div className="absolute inset-0 bg-black/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <button
                     type="button"
                     onClick={removeImage}
-                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
+                    className="absolute top-4 right-4 p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-300 hover:scale-110 shadow-lg"
                   >
-                    <X size={16} />
+                    <X size={20} />
                   </button>
                 </div>
               )}
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex space-x-4 pt-6">
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 pt-8">
               <button
                 type="button"
                 onClick={() => navigate('/events')}
-                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                className="flex-1 px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-2xl hover:bg-white/20 border border-white/20 hover:border-white/30 transition-all duration-300 font-semibold text-lg hover:scale-105 hover:-translate-y-1"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center space-x-2"
+                className="flex-1 px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl hover:scale-105 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0 transition-all duration-300 font-semibold text-lg shadow-2xl hover:shadow-purple-500/25 flex items-center justify-center space-x-3"
               >
                 {isLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Creating...</span>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                    <span>Creating Magic...</span>
                   </>
                 ) : (
-                  <span>Create Event</span>
+                  <span>Create Event ✨</span>
                 )}
               </button>
             </div>
@@ -243,22 +260,83 @@ const CreateEventPage = () => {
         </div>
 
         {/* Form Tips */}
-        <div className="mt-6 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-          <div className="flex">
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800">Tips for creating a great event</h3>
-              <div className="mt-2 text-sm text-blue-700">
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Use a clear and descriptive title</li>
-                  <li>Provide detailed information in the description</li>
-                  <li>Add an attractive image to make your event stand out</li>
-                  <li>Make sure the date is accurate</li>
-                </ul>
+        <div className="mt-8 bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-indigo-600/10 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8 animate-fade-in-up delay-400">
+          <div className="flex items-start space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-xl">💡</span>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-white mb-4">Tips for creating an amazing event</h3>
+              <div className="grid md:grid-cols-2 gap-4 text-slate-300">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                  <span>Use a clear and engaging title</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-pink-400 rounded-full"></div>
+                  <span>Provide detailed information</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
+                  <span>Add an eye-catching image</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                  <span>Double-check the date</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slide-in {
+          from {
+            opacity: 0;
+            transform: translateX(100px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .animate-slide-in {
+          animation: slide-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .delay-200 {
+          animation-delay: 200ms;
+        }
+        
+        .delay-400 {
+          animation-delay: 400ms;
+        }
+        
+        .delay-500 {
+          animation-delay: 500ms;
+        }
+        
+        .delay-1000 {
+          animation-delay: 1000ms;
+        }
+      `}</style>
     </div>
   );
 };

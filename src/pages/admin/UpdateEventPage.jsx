@@ -115,10 +115,18 @@ const UpdateEventPage = () => {
 
   if (fetchLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <h3 className="text-lg font-medium text-gray-600">Loading event...</h3>
+      <div className="min-h-screen" style={{
+        background: 'linear-gradient(135deg, #0f172a, #581c87, #0f172a)'
+      }}>
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <div className="relative mx-auto mb-6">
+              <div className="w-16 h-16 rounded-full border-4 border-purple-400/30 animate-spin"></div>
+              <div className="absolute top-0 left-0 w-16 h-16 rounded-full border-4 border-t-purple-400 animate-spin"></div>
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Loading event...</h3>
+            <p className="text-slate-300">Please wait while we fetch your event details</p>
+          </div>
         </div>
       </div>
     );
@@ -126,208 +134,312 @@ const UpdateEventPage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h3 className="text-lg font-medium text-red-600 mb-4">Error loading event</h3>
-          <button
-            onClick={() => navigate('/events')}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-          >
-            Back to Events
-          </button>
+      <div className="min-h-screen" style={{
+        background: 'linear-gradient(135deg, #0f172a, #581c87, #0f172a)'
+      }}>
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-pink-600 to-purple-600 flex items-center justify-center">
+              <X size={32} className="text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-4">Error loading event</h3>
+            <p className="text-slate-300 mb-6">We couldn't load your event details</p>
+            <button
+              onClick={() => navigate('/events')}
+              className="px-6 py-3 rounded-2xl font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl transform"
+              style={{
+                background: 'linear-gradient(90deg, #9333ea, #db2777, #4f46e5)',
+                boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3)'
+              }}
+            >
+              Back to Events
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center mb-8">
-          <button
-            onClick={() => navigate('/events')}
-            className="mr-4 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-200"
-          >
-            <ArrowLeft size={24} className="text-gray-600" />
-          </button>
-          <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">Update Event</h1>
-            <p className="text-lg text-gray-600">Modify your event details</p>
-          </div>
-        </div>
+    <div className="min-h-screen" style={{
+      background: 'linear-gradient(135deg, #0f172a, #581c87, #0f172a)'
+    }}>
+      {/* Floating Particles */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-20 w-32 h-32 rounded-full opacity-10 animate-pulse" style={{
+          background: 'linear-gradient(135deg, #9333ea, #db2777)'
+        }}></div>
+        <div className="absolute top-1/3 right-20 w-24 h-24 rounded-full opacity-10 animate-pulse delay-1000" style={{
+          background: 'linear-gradient(135deg, #4f46e5, #2563eb)'
+        }}></div>
+        <div className="absolute bottom-20 left-1/4 w-40 h-40 rounded-full opacity-5 animate-pulse delay-2000" style={{
+          background: 'linear-gradient(135deg, #8b5cf6, #a855f7)'
+        }}></div>
+      </div>
 
-        {/* Notification */}
-        {notification.show && (
-          <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
-            notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-          } text-white flex items-center space-x-2`}>
-            <span>{notification.message}</span>
-            <button onClick={() => setNotification({ show: false, message: '', type: 'success' })}>
-              <X size={16} />
+      <div className="relative z-10 p-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center mb-8">
+            <button
+              onClick={() => navigate('/events')}
+              className="mr-6 p-3 rounded-2xl transition-all duration-300 hover:scale-110 hover:rotate-3 transform"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.10)'
+              }}
+            >
+              <ArrowLeft size={24} className="text-white" />
             </button>
-          </div>
-        )}
-
-        {/* Form */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                Event Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter event title"
-                required
-              />
+              <h1 className="text-5xl font-bold text-white mb-3" style={{
+                background: 'linear-gradient(90deg, #c084fc, #f472b6, #818cf8)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent'
+              }}>
+                Update Event
+              </h1>
+              <p className="text-xl text-slate-300">Modify your event details and make it shine</p>
             </div>
+          </div>
 
-            {/* Date */}
-            <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
-                Event Date *
-              </label>
-              <div className="relative">
+          {/* Notification */}
+          {notification.show && (
+            <div className={`fixed top-6 right-6 z-50 p-4 rounded-2xl shadow-2xl text-white flex items-center space-x-3 transition-all duration-500 transform ${
+              notification.type === 'success' 
+                ? 'bg-gradient-to-r from-green-500 to-emerald-600' 
+                : 'bg-gradient-to-r from-red-500 to-pink-600'
+            }`} style={{
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.20)'
+            }}>
+              <span className="font-medium">{notification.message}</span>
+              <button 
+                onClick={() => setNotification({ show: false, message: '', type: 'success' })}
+                className="p-1 rounded-full hover:bg-white/20 transition-colors duration-200"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          )}
+
+          {/* Form */}
+          <div className="rounded-3xl shadow-2xl p-8 transition-all duration-500" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.10)'
+          }}>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Title */}
+              <div>
+                <label htmlFor="title" className="block text-lg font-semibold text-white mb-3">
+                  Event Title <span className="text-purple-400">*</span>
+                </label>
                 <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={formData.date}
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
                   onChange={handleInputChange}
-                  min={getTodayDate()}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-4 rounded-2xl text-white placeholder-slate-400 transition-all duration-300 focus:scale-[1.02] focus:shadow-2xl border-0 outline-none"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.10)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.20)'
+                  }}
+                  placeholder="Enter your amazing event title"
                   required
                 />
-                <Calendar size={20} className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" />
               </div>
-            </div>
 
-            {/* Description */}
-            <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-                Event Description *
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows={5}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                placeholder="Describe your event in detail..."
-                required
-              />
-            </div>
-
-            {/* Current Image Display */}
-            {currentImage && !imagePreview && (
+              {/* Date */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Event Image
+                <label htmlFor="date" className="block text-lg font-semibold text-white mb-3">
+                  Event Date <span className="text-purple-400">*</span>
                 </label>
                 <div className="relative">
-                  <img
-                    src={currentImage}
-                    alt="Current event"
-                    className="w-full h-64 object-cover rounded-lg"
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleInputChange}
+                    min={getTodayDate()}
+                    className="w-full px-4 py-4 rounded-2xl text-white transition-all duration-300 focus:scale-[1.02] focus:shadow-2xl border-0 outline-none"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.10)',
+                      backdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.20)',
+                      colorScheme: 'dark'
+                    }}
+                    required
                   />
-                  <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
-                    Current Image
-                  </div>
+                  <Calendar size={20} className="absolute right-4 top-4 text-purple-400 pointer-events-none" />
                 </div>
               </div>
-            )}
 
-            {/* Image Upload */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {currentImage ? 'Update Event Image (Optional)' : 'Event Image (Optional)'}
-              </label>
-              
-              {!imagePreview ? (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors duration-200">
-                  <input
-                    type="file"
-                    id="image-upload"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                  <label htmlFor="image-upload" className="cursor-pointer">
-                    <ImageIcon size={48} className="mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 mb-2">
-                      {currentImage ? 'Click to upload a new image' : 'Click to upload an image'}
-                    </p>
-                    <p className="text-sm text-gray-400">PNG, JPG, GIF up to 5MB</p>
+              {/* Description */}
+              <div>
+                <label htmlFor="description" className="block text-lg font-semibold text-white mb-3">
+                  Event Description <span className="text-purple-400">*</span>
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={5}
+                  className="w-full px-4 py-4 rounded-2xl text-white placeholder-slate-400 transition-all duration-300 focus:scale-[1.02] focus:shadow-2xl border-0 outline-none resize-none"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.10)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.20)'
+                  }}
+                  placeholder="Describe your event in detail and make it compelling..."
+                  required
+                />
+              </div>
+
+              {/* Current Image Display */}
+              {currentImage && !imagePreview && (
+                <div>
+                  <label className="block text-lg font-semibold text-white mb-3">
+                    Current Event Image
                   </label>
-                </div>
-              ) : (
-                <div className="relative">
-                  <img
-                    src={imagePreview}
-                    alt="New event preview"
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={removeNewImage}
-                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
-                  >
-                    <X size={16} />
-                  </button>
-                  <div className="absolute bottom-2 left-2 bg-green-600 bg-opacity-80 text-white px-2 py-1 rounded text-sm">
-                    New Image
+                  <div className="relative rounded-2xl overflow-hidden">
+                    <img
+                      src={currentImage}
+                      alt="Current event"
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute bottom-4 left-4 px-3 py-2 rounded-xl text-white font-medium" style={{
+                      background: 'rgba(0, 0, 0, 0.6)',
+                      backdropFilter: 'blur(8px)'
+                    }}>
+                      Current Image
+                    </div>
                   </div>
                 </div>
               )}
-            </div>
 
-            {/* Submit Buttons */}
-            <div className="flex space-x-4 pt-6">
-              <button
-                type="button"
-                onClick={() => navigate('/events')}
-                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={updateLoading}
-                className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center space-x-2"
-              >
-                {updateLoading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Updating...</span>
-                  </>
+              {/* Image Upload */}
+              <div>
+                <label className="block text-lg font-semibold text-white mb-3">
+                  {currentImage ? 'Update Event Image (Optional)' : 'Event Image (Optional)'}
+                </label>
+                
+                {!imagePreview ? (
+                  <div className="rounded-2xl p-12 text-center transition-all duration-300 hover:scale-[1.02] cursor-pointer group" style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    backdropFilter: 'blur(8px)',
+                    border: '2px dashed rgba(168, 85, 247, 0.50)'
+                  }}>
+                    <input
+                      type="file"
+                      id="image-upload"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                    <label htmlFor="image-upload" className="cursor-pointer">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3" style={{
+                        background: 'linear-gradient(135deg, #a855f7, #4f46e5)'
+                      }}>
+                        <ImageIcon size={32} className="text-white" />
+                      </div>
+                      <p className="text-white mb-2 font-medium">
+                        {currentImage ? 'Click to upload a new image' : 'Click to upload an image'}
+                      </p>
+                      <p className="text-slate-400">PNG, JPG, GIF up to 5MB</p>
+                    </label>
+                  </div>
                 ) : (
-                  <span>Update Event</span>
+                  <div className="relative rounded-2xl overflow-hidden">
+                    <img
+                      src={imagePreview}
+                      alt="New event preview"
+                      className="w-full h-64 object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeNewImage}
+                      className="absolute top-4 right-4 p-2 rounded-full text-white transition-all duration-300 hover:scale-110 hover:rotate-90"
+                      style={{
+                        background: 'linear-gradient(135deg, #dc2626, #ef4444)'
+                      }}
+                    >
+                      <X size={16} />
+                    </button>
+                    <div className="absolute bottom-4 left-4 px-3 py-2 rounded-xl text-white font-medium" style={{
+                      background: 'linear-gradient(135deg, #059669, #10b981)',
+                      backdropFilter: 'blur(8px)'
+                    }}>
+                      New Image
+                    </div>
+                  </div>
                 )}
-              </button>
-            </div>
-          </form>
-        </div>
+              </div>
 
-        {/* Form Tips */}
-        <div className="mt-6 bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg">
-          <div className="flex">
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-amber-800">Update Guidelines</h3>
-              <div className="mt-2 text-sm text-amber-700">
-                <ul className="list-disc list-inside space-y-1">
-                  <li>Only upload a new image if you want to replace the current one</li>
-                  <li>All changes will be saved when you click "Update Event"</li>
-                  <li>Make sure all required fields are filled out</li>
-                  <li>The event date should be today or in the future</li>
-                </ul>
+              {/* Submit Buttons */}
+              <div className="flex space-x-6 pt-8">
+                <button
+                  type="button"
+                  onClick={() => navigate('/events')}
+                  className="flex-1 px-6 py-4 rounded-2xl font-semibold text-white transition-all duration-300 hover:scale-105 transform"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.10)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.20)'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={updateLoading}
+                  className="flex-1 px-6 py-4 rounded-2xl font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transform flex items-center justify-center space-x-3"
+                  style={{
+                    background: updateLoading 
+                      ? 'rgba(147, 51, 234, 0.5)' 
+                      : 'linear-gradient(90deg, #9333ea, #db2777, #4f46e5)',
+                    boxShadow: '0 20px 25px -5px rgba(147, 51, 234, 0.3)'
+                  }}
+                >
+                  {updateLoading ? (
+                    <>
+                      <div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white animate-spin"></div>
+                      <span>Updating...</span>
+                    </>
+                  ) : (
+                    <span>Update Event</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Form Tips */}
+          <div className="mt-8 rounded-2xl p-6 transition-all duration-500" style={{
+            background: 'rgba(251, 191, 36, 0.10)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(251, 191, 36, 0.30)'
+          }}>
+            <div className="flex items-start">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4" style={{
+                background: 'linear-gradient(135deg, #f59e0b, #facc15)'
+              }}>
+                <Calendar size={24} className="text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-yellow-400 mb-3">Update Guidelines</h3>
+                <div className="text-slate-300 space-y-2">
+                  <p>• Only upload a new image if you want to replace the current one</p>
+                  <p>• All changes will be saved when you click "Update Event"</p>
+                  <p>• Make sure all required fields are filled out</p>
+                  <p>• The event date should be today or in the future</p>
+                </div>
               </div>
             </div>
           </div>

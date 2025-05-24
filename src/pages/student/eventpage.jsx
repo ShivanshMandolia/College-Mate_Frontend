@@ -36,11 +36,214 @@ import {
   BookmarkBorder as BookmarkBorderIcon,
   Event as EventIcon
 } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import { 
   useGetAllEventsQuery
 } from '../../features/events/eventsApiSlice';
 import { selectCurrentUser } from '../../features/auth/authSlice';
+
+// College Mate Theme
+const collegeMateTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#9333ea', // purple-600
+      light: '#c084fc', // purple-400
+      dark: '#7c3aed', // purple-700
+    },
+    secondary: {
+      main: '#db2777', // pink-600
+      light: '#f472b6', // pink-400
+    },
+    info: {
+      main: '#4f46e5', // indigo-600
+      light: '#818cf8', // indigo-400
+    },
+    background: {
+      default: '#0f172a', // slate-900
+      paper: 'rgba(255, 255, 255, 0.05)',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#cbd5e1', // slate-300
+    },
+  },
+  shape: {
+    borderRadius: 16,
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.10)',
+          borderRadius: '24px',
+          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            transform: 'translateY(-8px)',
+            background: 'rgba(255, 255, 255, 0.10)',
+            border: '1px solid rgba(147, 51, 234, 0.50)',
+            boxShadow: '0 25px 50px -12px rgba(147, 51, 234, 0.10)',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '16px',
+          textTransform: 'none',
+          fontWeight: 600,
+          padding: '12px 24px',
+          background: 'linear-gradient(90deg, #9333ea, #db2777, #4f46e5)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            transform: 'scale(1.05) translateY(-2px)',
+            boxShadow: '0 25px 50px -12px rgba(147, 51, 234, 0.25)',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.10)',
+            borderRadius: '16px',
+            '&:hover': {
+              background: 'rgba(255, 255, 255, 0.08)',
+            },
+            '&.Mui-focused': {
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(147, 51, 234, 0.50)',
+            },
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.10)',
+          borderRadius: '16px',
+          '&:hover': {
+            background: 'rgba(255, 255, 255, 0.08)',
+          },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          background: 'rgba(255, 255, 255, 0.10)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.20)',
+          borderRadius: '12px',
+          color: '#ffffff',
+          '&.MuiChip-colorSuccess': {
+            background: 'linear-gradient(135deg, #10b981, #059669)',
+          },
+          '&.MuiChip-colorWarning': {
+            background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+          },
+          '&.MuiChip-colorError': {
+            background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+          },
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          background: 'linear-gradient(135deg, #9333ea, #db2777)',
+          fontWeight: 700,
+          fontSize: '1.2rem',
+        },
+      },
+    },
+  },
+});
+
+// Styled Components
+const PageContainer = styled(Container)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #0f172a, #581c87, #0f172a)',
+  minHeight: '100vh',
+  position: 'relative',
+  paddingTop: '32px',
+  paddingBottom: '32px',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: `
+      radial-gradient(circle at 20% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.10) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(59, 130, 246, 0.08) 0%, transparent 50%)
+    `,
+    pointerEvents: 'none',
+  },
+}));
+
+const HeroSection = styled(Box)(({ theme }) => ({
+  textAlign: 'center',
+  marginBottom: '48px',
+  position: 'relative',
+  zIndex: 1,
+}));
+
+const GradientText = styled(Typography)(({ theme }) => ({
+  background: 'linear-gradient(90deg, #c084fc, #f472b6, #818cf8)',
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  color: 'transparent',
+  fontWeight: 700,
+}));
+
+const SearchCard = styled(Card)(({ theme }) => ({
+  padding: '32px',
+  marginBottom: '32px',
+  background: 'rgba(255, 255, 255, 0.08)',
+  backdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  '&:hover': {
+    transform: 'none',
+    background: 'rgba(255, 255, 255, 0.08)',
+  },
+}));
+
+const EventCardStyled = styled(Card)(({ theme }) => ({
+  height: 'fit-content',
+  overflow: 'hidden',
+  '& .MuiCardMedia-root': {
+    borderRadius: '16px',
+    margin: '16px',
+    marginBottom: 0,
+  },
+}));
+
+const FloatingIcon = styled(Box)(({ theme }) => ({
+  width: '64px',
+  height: '64px',
+  background: 'linear-gradient(135deg, #9333ea, #db2777)',
+  borderRadius: '16px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: '16px',
+  boxShadow: '0 10px 25px -5px rgba(147, 51, 234, 0.3)',
+  transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  '&:hover': {
+    transform: 'scale(1.1) rotate(3deg)',
+  },
+}));
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -51,6 +254,26 @@ const ExpandMore = styled((props) => {
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
   }),
+  background: 'rgba(255, 255, 255, 0.10)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(255, 255, 255, 0.20)',
+  '&:hover': {
+    background: 'rgba(255, 255, 255, 0.15)',
+    transform: !expand ? 'rotate(0deg) scale(1.1)' : 'rotate(180deg) scale(1.1)',
+  },
+}));
+
+const LoadingContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minHeight: '50vh',
+  '& .MuiCircularProgress-root': {
+    background: 'linear-gradient(45deg, #9333ea, #db2777)',
+    borderRadius: '50%',
+    padding: '4px',
+  },
 }));
 
 const StudentEventsPage = () => {
@@ -137,124 +360,154 @@ const StudentEventsPage = () => {
 
   if (isLoading) {
     return (
-      <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <Box textAlign="center">
-          <CircularProgress size={60} sx={{ mb: 2 }} />
-          <Typography variant="h6" color="text.secondary">Loading events...</Typography>
-        </Box>
-      </Container>
+      <ThemeProvider theme={collegeMateTheme}>
+        <PageContainer maxWidth="lg">
+          <LoadingContainer>
+            <CircularProgress size={60} sx={{ mb: 2 }} />
+            <Typography variant="h6" color="text.secondary">Loading events...</Typography>
+          </LoadingContainer>
+        </PageContainer>
+      </ThemeProvider>
     );
   }
 
   if (error) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Alert 
-          severity="error" 
-          action={
-            <Button color="inherit" size="small" onClick={() => refetch()}>
-              Retry
-            </Button>
-          }
-        >
-          {error?.data?.message || 'Failed to load events. Please try again.'}
-        </Alert>
-      </Container>
+      <ThemeProvider theme={collegeMateTheme}>
+        <PageContainer maxWidth="lg">
+          <Alert 
+            severity="error" 
+            sx={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              borderRadius: '16px',
+            }}
+            action={
+              <Button color="inherit" size="small" onClick={() => refetch()}>
+                Retry
+              </Button>
+            }
+          >
+            {error?.data?.message || 'Failed to load events. Please try again.'}
+          </Alert>
+        </PageContainer>
+      </ThemeProvider>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 2 }}>
-      {/* Header */}
-      <Box sx={{ mb: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <EventIcon sx={{ fontSize: 30, color: 'primary.main', mr: 2 }} />
-          <Typography variant="h3" component="h2" fontWeight="bold">
-            Campus Events
-          </Typography>
-        </Box>
-        <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
-          Discover and participate in exciting campus activities
-        </Typography>
-      </Box>
+    <ThemeProvider theme={collegeMateTheme}>
+      <PageContainer maxWidth="100%">
+        {/* Hero Section */}
+        <HeroSection>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
+            <FloatingIcon>
+              <EventIcon sx={{ fontSize: 32, color: 'white' }} />
+            </FloatingIcon>
+            <Box>
+              <GradientText variant="h3" component="h1">
+                Campus Events
+              </GradientText>
+              <Typography variant="h6" color="text.secondary" sx={{ mt: 1 }}>
+                Discover and participate in exciting campus activities
+              </Typography>
+            </Box>
+          </Box>
+        </HeroSection>
 
-      {/* Search and Filters */}
-      <Card sx={{ p: 2, mb: 2 }}>
-        <Grid container spacing={3} alignItems="center">
-          <Grid item xs={12} md={8}>
-            <TextField
-              fullWidth
-              placeholder="Search events..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Filter Events</InputLabel>
-              <Select
-                value={filterType}
-                label="Filter Events"
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <MenuItem value="all">All Events</MenuItem>
-                <MenuItem value="upcoming">Upcoming</MenuItem>
-                <MenuItem value="today">Today</MenuItem>
-                <MenuItem value="past">Past Events</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Card>
-
-      {/* Events Grid */}
-      <Grid container spacing={3}>
-        {filteredEvents.map((event) => {
-          const dateInfo = formatDate(event.date);
-          const eventStatus = getEventStatus(event.date);
-          const isExpanded = expandedCards.has(event._id);
-          const isBookmarked = bookmarkedEvents.has(event._id);
-
-          return (
-            <Grid item xs={9} md={4} key={event._id}>
-              <EventCard
-                event={event}
-                dateInfo={dateInfo}
-                eventStatus={eventStatus}
-                isExpanded={isExpanded}
-                isBookmarked={isBookmarked}
-                onExpandClick={() => handleExpandClick(event._id)}
-                onToggleBookmark={() => toggleBookmark(event._id)}
-                user={user}
+        {/* Search and Filters */}
+        <SearchCard>
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={8}>
+              <TextField
+                fullWidth
+                placeholder="Search events..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: '#c084fc' }} />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
-          );
-        })}
-      </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel sx={{ color: '#cbd5e1' }}>Filter Events</InputLabel>
+                <Select
+                  value={filterType}
+                  label="Filter Events"
+                  onChange={(e) => setFilterType(e.target.value)}
+                >
+                  <MenuItem value="all">All Events</MenuItem>
+                  <MenuItem value="upcoming">Upcoming</MenuItem>
+                  <MenuItem value="today">Today</MenuItem>
+                  <MenuItem value="past">Past Events</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </SearchCard>
 
-      {filteredEvents.length === 0 && (
-        <Box textAlign="center" sx={{ py: 8 }}>
-          <CalendarIcon sx={{ fontSize: 80, color: 'text.disabled', mb: 2 }} />
-          <Typography variant="h5" gutterBottom>
-            No events found
-          </Typography>
-          <Typography color="text.secondary">
-            Try adjusting your search terms or filters
-          </Typography>
-        </Box>
-      )}
-    </Container>
+        {/* Events Grid */}
+        <Grid container spacing={3}>
+          {filteredEvents.map((event) => {
+            const dateInfo = formatDate(event.date);
+            const eventStatus = getEventStatus(event.date);
+            const isExpanded = expandedCards.has(event._id);
+            const isBookmarked = bookmarkedEvents.has(event._id);
+
+            return (
+              <Grid item xs={12} md={4} key={event._id}>
+                <EventCard
+                  event={event}
+                  dateInfo={dateInfo}
+                  eventStatus={eventStatus}
+                  isExpanded={isExpanded}
+                  isBookmarked={isBookmarked}
+                  onExpandClick={() => handleExpandClick(event._id)}
+                  onToggleBookmark={() => toggleBookmark(event._id)}
+                  user={user}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+
+        {filteredEvents.length === 0 && (
+          <Box textAlign="center" sx={{ py: 8 }}>
+            <Box
+              sx={{
+                width: 120,
+                height: 120,
+                background: 'linear-gradient(135deg, #9333ea, #db2777)',
+                borderRadius: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 24px',
+                opacity: 0.6,
+              }}
+            >
+              <CalendarIcon sx={{ fontSize: 60, color: 'white' }} />
+            </Box>
+            <Typography variant="h5" gutterBottom fontWeight={600}>
+              No events found
+            </Typography>
+            <Typography color="text.secondary">
+              Try adjusting your search terms or filters
+            </Typography>
+          </Box>
+        )}
+      </PageContainer>
+    </ThemeProvider>
   );
 };
 
-// Event Card Component using Material-UI
+// Event Card Component
 const EventCard = ({ 
   event, 
   dateInfo, 
@@ -266,27 +519,47 @@ const EventCard = ({
   user 
 }) => {
   return (
-    <Card sx={{ maxWidth: '100%', height: 'fit-content' }}>
+    <EventCardStyled>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: 'primary.main' }}>
+          <Avatar sx={{ 
+            width: 56, 
+            height: 56,
+            fontSize: '1.4rem',
+            fontWeight: 700,
+          }}>
             {dateInfo.day}
           </Avatar>
         }
         action={
           user && (
-            <IconButton onClick={onToggleBookmark} color={isBookmarked ? 'warning' : 'default'}>
+            <IconButton 
+              onClick={onToggleBookmark} 
+              sx={{
+                background: isBookmarked 
+                  ? 'linear-gradient(135deg, #facc15, #f59e0b)' 
+                  : 'rgba(255, 255, 255, 0.10)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.20)',
+                '&:hover': {
+                  background: isBookmarked 
+                    ? 'linear-gradient(135deg, #f59e0b, #d97706)' 
+                    : 'rgba(255, 255, 255, 0.15)',
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
               {isBookmarked ? <BookmarkIcon /> : <BookmarkBorderIcon />}
             </IconButton>
           )
         }
         title={
-          <Typography variant="h6" component="div" fontWeight="bold">
+          <Typography variant="h6" component="div" fontWeight={700} sx={{ mb: 1 }}>
             {event.title}
           </Typography>
         }
         subheader={
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             <Chip 
               icon={<TimeIcon />} 
               label={dateInfo.time} 
@@ -314,8 +587,17 @@ const EventCard = ({
         />
       )}
 
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={{ px: 2 }}>
         <IconButton
+          sx={{
+            background: 'rgba(255, 255, 255, 0.10)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.20)',
+            '&:hover': {
+              background: 'rgba(255, 255, 255, 0.15)',
+              transform: 'scale(1.1)',
+            },
+          }}
           onClick={() => {
             if (navigator.share) {
               navigator.share({
@@ -343,45 +625,77 @@ const EventCard = ({
       </CardActions>
 
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+        <CardContent sx={{ pt: 0 }}>
+          <Typography variant="h6" gutterBottom fontWeight={600} sx={{ mb: 2 }}>
             Event Details
           </Typography>
           
-          <Typography paragraph color="text.secondary">
+          <Typography paragraph color="text.secondary" sx={{ mb: 3 }}>
             {event.description}
           </Typography>
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <CalendarIcon color="action" />
-              <Typography variant="body2">
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 2,
+              p: 2,
+              background: 'rgba(255, 255, 255, 0.05)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.10)'
+            }}>
+              <CalendarIcon sx={{ color: '#c084fc' }} />
+              <Typography variant="body2" fontWeight={500}>
                 {dateInfo.full}
               </Typography>
             </Box>
 
             {event.location && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <LocationIcon color="action" />
-                <Typography variant="body2">
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2,
+                p: 2,
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.10)'
+              }}>
+                <LocationIcon sx={{ color: '#818cf8' }} />
+                <Typography variant="body2" fontWeight={500}>
                   {event.location}
                 </Typography>
               </Box>
             )}
 
             {event.expectedAttendees && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <PeopleIcon color="action" />
-                <Typography variant="body2">
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2,
+                p: 2,
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.10)'
+              }}>
+                <PeopleIcon sx={{ color: '#60a5fa' }} />
+                <Typography variant="body2" fontWeight={500}>
                   Expected: {event.expectedAttendees}+ attendees
                 </Typography>
               </Box>
             )}
 
             {event.organizer && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <EventIcon color="action" />
-                <Typography variant="body2">
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2,
+                p: 2,
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.10)'
+              }}>
+                <EventIcon sx={{ color: '#f472b6' }} />
+                <Typography variant="body2" fontWeight={500}>
                   Organized by: {event.organizer}
                 </Typography>
               </Box>
@@ -389,7 +703,7 @@ const EventCard = ({
           </Box>
         </CardContent>
       </Collapse>
-    </Card>
+    </EventCardStyled>
   );
 };
 

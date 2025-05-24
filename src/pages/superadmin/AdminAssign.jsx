@@ -108,243 +108,261 @@ const AssignComplaint = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 text-indigo-600 animate-spin" />
-        <span className="ml-2 text-gray-600">Loading...</span>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+        <div className="flex justify-center items-center h-64">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 text-center">
+            <Loader2 className="h-12 w-12 text-purple-400 animate-spin mx-auto mb-4" />
+            <span className="text-white text-lg font-medium">Loading...</span>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (isAdminsError) {
     return (
-      <div className="flex justify-center items-center h-64 bg-red-50 rounded-lg p-4">
-        <AlertCircle className="h-8 w-8 text-red-600" />
-        <div className="ml-3">
-          <h3 className="text-red-800 font-medium">Error loading admin data</h3>
-          <p className="text-red-700 mt-1">{adminsError?.data?.message || adminsError?.message || 'Something went wrong'}</p>
-          <button 
-            onClick={() => refetchAdminStatus()}
-            className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
-          >
-            Try again
-          </button>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+        <div className="flex justify-center items-center h-64">
+          <div className="bg-red-500/10 backdrop-blur-xl border border-red-400/20 rounded-3xl p-8 text-center max-w-md">
+            <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+            <h3 className="text-red-300 font-semibold text-lg mb-2">Error loading admin data</h3>
+            <p className="text-red-200/80 mb-4">{adminsError?.data?.message || adminsError?.message || 'Something went wrong'}</p>
+            <button 
+              onClick={() => refetchAdminStatus()}
+              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-2xl font-medium hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+            >
+              Try again
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="mb-6">
-        <button 
-          onClick={() => navigate(`/superadmin/complaints/${complaintId}`)}
-          className="flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Back to complaint details
-        </button>
-      </div>
-      
-      {/* Complaint Summary */}
-      {complaint && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Complaint Summary</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="border-l-4 border-indigo-500 pl-4">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Title</p>
-              <p className="font-medium text-gray-900 dark:text-white">{complaint.title}</p>
-            </div>
-            <div className="border-l-4 border-purple-500 pl-4">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Category</p>
-              <p className="font-medium text-gray-900 dark:text-white">{complaint.category}</p>
-            </div>
-            <div className="border-l-4 border-amber-500 pl-4">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Submitted On</p>
-              <p className="font-medium text-gray-900 dark:text-white">{formatDate(complaint.createdAt)}</p>
-            </div>
-          </div>
-          
-          {complaint.assignedTo && (
-            <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-md border-l-4 border-amber-400">
-              <div className="flex items-start">
-                <AlertCircle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                    This complaint is already assigned
-                  </h3>
-                  <p className="mt-1 text-sm text-amber-700 dark:text-amber-200">
-                    Currently assigned to {complaint.assignedTo.email || complaint.assignedTo}. 
-                    Reassigning will notify the new admin.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-      
-      {/* Admin Assignment Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-        <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
-          <div className="flex items-center">
-            <Shield className="h-5 w-5 text-indigo-600 dark:text-indigo-400 mr-2" />
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-              Select Admin to Assign Complaint
-            </h1>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400 mt-1 ml-7">
-            Select an admin to handle this complaint. Admins with "Free" status are currently not assigned to any active complaints.
-          </p>        
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+      <div className="container mx-auto max-w-6xl">
+        {/* Back Button */}
+        <div className="mb-8">
+          <button 
+            onClick={() => navigate(`/superadmin/complaints/${complaintId}`)}
+            className="flex items-center text-purple-300 hover:text-white bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3 font-medium hover:bg-white/10 hover:scale-105 transition-all duration-300"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Back to complaint details
+          </button>
         </div>
         
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          {Array.isArray(admins) && admins.length > 0 ? (
-  admins.map((admin, index) => (
-    <div 
-      key={admin.adminId || admin._id || admin.id} 
-      className={`px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 ${
-        isAssignSuccess && assigningAdminId === (admin.adminId || admin._id || admin.id)
-          ? 'bg-green-50 dark:bg-green-900/20' 
-          : ''
-      }`}
-    >
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-        <div className="flex items-start">
-          <div className={`p-2 rounded-md ${
-            admin.status === 'free' 
-              ? 'bg-green-100 dark:bg-green-900/30' 
-              : 'bg-amber-100 dark:bg-amber-900/30'
-          }`}>
-            {admin.status === 'free' ? (
-              <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
-            ) : (
-              <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+        {/* Complaint Summary */}
+        {complaint && (
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 mb-8 hover:bg-white/10 transition-all duration-500">
+            <h2 className="text-2xl font-bold mb-6 text-white flex items-center">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl flex items-center justify-center mr-4">
+                <Briefcase className="h-6 w-6 text-white" />
+              </div>
+              Complaint Summary
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-r from-purple-600/20 to-indigo-600/20 backdrop-blur-xl border border-purple-400/30 rounded-2xl p-6">
+                <p className="text-purple-300 text-sm font-medium mb-2">Title</p>
+                <p className="text-white font-semibold text-lg">{complaint.title}</p>
+              </div>
+              <div className="bg-gradient-to-r from-indigo-600/20 to-blue-600/20 backdrop-blur-xl border border-indigo-400/30 rounded-2xl p-6">
+                <p className="text-indigo-300 text-sm font-medium mb-2">Category</p>
+                <p className="text-white font-semibold text-lg">{complaint.category}</p>
+              </div>
+              <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-xl border border-yellow-400/30 rounded-2xl p-6">
+                <p className="text-yellow-300 text-sm font-medium mb-2">Submitted On</p>
+                <p className="text-white font-semibold text-lg">{formatDate(complaint.createdAt)}</p>
+              </div>
+            </div>
+            
+            {complaint.assignedTo && (
+              <div className="mt-6 bg-orange-500/10 backdrop-blur-xl border border-orange-400/30 rounded-2xl p-6">
+                <div className="flex items-start">
+                  <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl flex items-center justify-center mr-4 mt-1">
+                    <AlertCircle className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-orange-300 font-semibold text-lg mb-1">
+                      This complaint is already assigned
+                    </h3>
+                    <p className="text-orange-200/80">
+                      Currently assigned to {complaint.assignedTo.email || complaint.assignedTo}. 
+                      Reassigning will notify the new admin.
+                    </p>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
-          <div className="ml-3">
-            {/* Show admin name if present, else admin1, admin2, ... */}
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {admin.name || admin.username || `admin${index + 1}`}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{admin.email || 'No email provided'}</p>
-            <div className="flex items-center mt-1">
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                admin.status === 'free'
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                  : 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-              }`}>
-                {admin.status === 'free' ? 'Free' : 'Busy'}
-              </span>
+        )}
+        
+        {/* Admin Assignment Section */}
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden">
+          <div className="border-b border-white/10 p-8">
+            <div className="flex items-center mb-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mr-4">
+                <Shield className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-white">
+                Select Admin to Assign Complaint
+              </h1>
             </div>
+            <p className="text-slate-300 text-lg ml-16">
+              Select an admin to handle this complaint. Admins with "Free" status are currently not assigned to any active complaints.
+            </p>        
           </div>
-        </div>
-
-     
-
-                  
-                  <div className="mt-4 md:mt-0 flex items-center">
-                    {admin.status === 'busy' && admin.currentComplaint && (
-                      <div className="mr-4 text-right hidden md:block">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Current Assignment:</p>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-xs">
-                          {admin.currentComplaint.title}
+          
+          <div className="divide-y divide-white/10">
+            {Array.isArray(admins) && admins.length > 0 ? (
+              admins.map((admin, index) => (
+                <div 
+                  key={admin.adminId || admin._id || admin.id} 
+                  className={`p-8 hover:bg-white/5 transition-all duration-500 ${
+                    isAssignSuccess && assigningAdminId === (admin.adminId || admin._id || admin.id)
+                      ? 'bg-green-500/10 border-l-4 border-green-400' 
+                      : ''
+                  }`}
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex items-start">
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mr-6 ${
+                        admin.status === 'free' 
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-500' 
+                          : 'bg-gradient-to-r from-yellow-500 to-orange-500'
+                      }`}>
+                        {admin.status === 'free' ? (
+                          <CheckCircle className="h-8 w-8 text-white" />
+                        ) : (
+                          <Clock className="h-8 w-8 text-white" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-xl font-semibold text-white mb-1">
+                          {admin.name || admin.username || `admin${index + 1}`}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Status: {admin.currentComplaint.status}
+                        <p className="text-slate-300 mb-3">{admin.email || 'No email provided'}</p>
+                        <div className="flex items-center">
+                          <span className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold ${
+                            admin.status === 'free'
+                              ? 'bg-green-500/20 text-green-300 border border-green-400/30'
+                              : 'bg-yellow-500/20 text-yellow-300 border border-yellow-400/30'
+                          }`}>
+                            {admin.status === 'free' ? 'Free' : 'Busy'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 lg:mt-0 flex items-center">
+                      {admin.status === 'busy' && admin.currentComplaint && (
+                        <div className="mr-6 text-right hidden lg:block">
+                          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
+                            <p className="text-slate-400 text-sm font-medium mb-1">Current Assignment:</p>
+                            <p className="text-white font-semibold mb-1 max-w-xs truncate">
+                              {admin.currentComplaint.title}
+                            </p>
+                            <p className="text-slate-300 text-sm">
+                              Status: {admin.currentComplaint.status}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <button
+                        onClick={() => handleAssign(admin.adminId || admin._id || admin.id)}
+                        disabled={isAssigning && assigningAdminId === (admin.adminId || admin._id || admin.id)}
+                        className={`flex items-center px-8 py-4 rounded-2xl font-semibold text-white shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
+                          ${admin.status === 'free' 
+                            ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-105 hover:shadow-green-500/25' 
+                            : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:scale-105 hover:shadow-purple-500/25'
+                          }`}
+                      >
+                        {isAssigning && assigningAdminId === (admin.adminId || admin._id || admin.id) ? (
+                          <>
+                            <Loader2 className="h-5 w-5 mr-3 animate-spin" />
+                            Assigning...
+                          </>
+                        ) : isAssignSuccess && assigningAdminId === (admin.adminId || admin._id || admin.id) ? (
+                          <>
+                            <CheckCircle className="h-5 w-5 mr-3" />
+                            Assigned Successfully
+                          </>
+                        ) : (
+                          <>
+                            <UserCheck className="h-5 w-5 mr-3" />
+                            {admin.status === 'free' ? 'Assign' : 'Reassign'}
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Current complaint info for mobile view */}
+                  {admin.status === 'busy' && admin.currentComplaint && (
+                    <div className="mt-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 lg:hidden">
+                      <div className="flex items-center mb-2">
+                        <Briefcase className="h-5 w-5 text-purple-400 mr-2" />
+                        <p className="text-purple-300 font-medium">
+                          Current Assignment:
                         </p>
                       </div>
-                    )}
-                    
-                    <button
-                      onClick={() => handleAssign(admin.adminId || admin._id || admin.id)}
-                      disabled={isAssigning && assigningAdminId === (admin.adminId || admin._id || admin.id)}
-                      className={`flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white
-                        ${admin.status === 'free' 
-                          ? 'bg-green-600 hover:bg-green-700' 
-                          : 'bg-indigo-600 hover:bg-indigo-700'
-                        } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed`}
-                    >
-                      {isAssigning && assigningAdminId === (admin.adminId || admin._id || admin.id) ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Assigning...
-                        </>
-                      ) : isAssignSuccess && assigningAdminId === (admin.adminId || admin._id || admin.id) ? (
-                        <>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Assigned Successfully
-                        </>
-                      ) : (
-                        <>
-                          <UserCheck className="h-4 w-4 mr-2" />
-                          {admin.status === 'free' ? 'Assign' : 'Reassign'}
-                        </>
-                      )}
-                    </button>
-                  </div>
+                      <p className="text-white font-semibold mb-2">
+                        {admin.currentComplaint.title}
+                      </p>
+                      <p className="text-slate-300 text-sm">
+                        Status: {admin.currentComplaint.status}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* Assignment error message */}
+                  {assignError && assigningAdminId === (admin.adminId || admin._id || admin.id) && (
+                    <div className="mt-6 bg-red-500/10 backdrop-blur-xl border border-red-400/30 rounded-2xl p-4">
+                      <div className="flex items-start">
+                        <XCircle className="h-5 w-5 text-red-400 mt-0.5 mr-3" />
+                        <p className="text-red-300">
+                          {assignError?.data?.message || assignError?.message || 'Failed to assign complaint to this admin'}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                
-                {/* Current complaint info for mobile view */}
-                {admin.status === 'busy' && admin.currentComplaint && (
-                  <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-md md:hidden">
-                    <div className="flex items-center">
-                      <Briefcase className="h-4 w-4 text-gray-500 dark:text-gray-400 mr-1" />
-                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                        Current Assignment:
-                      </p>
-                    </div>
-                    <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
-                      {admin.currentComplaint.title}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      Status: {admin.currentComplaint.status}
-                    </p>
-                  </div>
-                )}
-                
-                {/* Assignment error message */}
-                {assignError && assigningAdminId === (admin.adminId || admin._id || admin.id) && (
-                  <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-md">
-                    <div className="flex items-start">
-                      <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5" />
-                      <p className="ml-2 text-sm text-red-600 dark:text-red-400">
-                        {assignError?.data?.message || assignError?.message || 'Failed to assign complaint to this admin'}
-                      </p>
-                    </div>
-                  </div>
-                )}
+              ))
+            ) : (
+              <div className="p-12 text-center">
+                <div className="w-24 h-24 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                  <Shield className="h-12 w-12 text-white" />
+                </div>
+                <h3 className="text-2xl font-semibold text-white mb-3">No admins available</h3>
+                <p className="text-slate-300 text-lg mb-6 max-w-md mx-auto">
+                  {isAdminsLoading 
+                    ? 'Loading admin data...' 
+                    : 'There are no admins available in the system to assign complaints to.'
+                  }
+                </p>
+                <button
+                  onClick={() => refetchAdminStatus()}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-semibold hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 flex items-center mx-auto"
+                >
+                  <ArrowRight className="h-5 w-5 mr-2" />
+                  Retry loading admins
+                </button>
               </div>
-            ))
-          ) : (
-            <div className="px-6 py-8 text-center">
-              <Shield className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No admins available</h3>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {isAdminsLoading 
-                  ? 'Loading admin data...' 
-                  : 'There are no admins available in the system to assign complaints to.'
-                }
-              </p>
-              <button
-                onClick={() => refetchAdminStatus()}
-                className="mt-3 inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <ArrowRight className="h-4 w-4 mr-1" />
-                Retry loading admins
-              </button>
-            </div>
-          )}
-        </div>
-        
-        {/* Refresh button */}
-        <div className="bg-gray-50 dark:bg-gray-700 px-6 py-3">
-          <button
-            onClick={() => refetchAdminStatus()}
-            className="flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-          >
-            <ArrowRight className="h-4 w-4 mr-1" />
-            Refresh admin status
-          </button>
+            )}
+          </div>
+          
+          {/* Refresh button */}
+          <div className="bg-white/5 border-t border-white/10 p-6">
+            <button
+              onClick={() => refetchAdminStatus()}
+              className="flex items-center text-purple-300 hover:text-white bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3 font-medium hover:bg-white/10 hover:scale-105 transition-all duration-300"
+            >
+              <ArrowRight className="h-5 w-5 mr-2" />
+              Refresh admin status
+            </button>
+          </div>
         </div>
       </div>
     </div>
